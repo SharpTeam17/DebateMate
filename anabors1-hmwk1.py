@@ -12,6 +12,8 @@ def get_coins():
 
 #---------------------------------
 def compare_coins(coinA, coinB):
+	print(coinA)
+	print(coinB)
 	if coinA > coinB:
 		return 1
 	elif coinA < coinB:
@@ -20,7 +22,6 @@ def compare_coins(coinA, coinB):
 		return 0
 #---------------------------------
 def sort_coints(coins):
-	
 	print(coins)
 
 #------------------------------------------------
