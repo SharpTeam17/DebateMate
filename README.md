@@ -20,10 +20,21 @@ Fall 2017 - COMP 4081: Software Engineering project
 
 
 ## Setup
+Install all of the python dependencies via pip for Windows:
+```
+pip install -r requirements.txt
+```
+
+For Unix-based operating systems you will need to use the python3-pip package:
+```
+pip3 install -r requirements.txt
+```
+
 Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli). To run a local instance of Heroku on Unix-based operating systems:
 ```
 heroku local web
 ```
+
 For Windows you must use the following command:
 ```
 heroku local web -f Procfile.windows
