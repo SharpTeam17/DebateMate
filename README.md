@@ -17,3 +17,14 @@ Fall 2017 - COMP 4081: Software Engineering project
 
 ## Features
 ...
+
+
+## Setup
+Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli). To run a local instance of Heroku on Unix-based operating systems:
+```
+heroku local web
+```
+For Windows you must use the following command:
+```
+heroku local web -f Procfile.windows
+```
