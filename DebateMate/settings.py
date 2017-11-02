@@ -30,6 +30,7 @@ DEBUG = True
 
 INSTALLED_APPS = [
     'main',
+    'bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
