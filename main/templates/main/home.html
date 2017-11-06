@@ -1,15 +1,21 @@
-{% load bootstrap4 %}
+<!-- {% load bootstrap4 %} -->
 {% load staticfiles %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-<script src="{% static "js/jquery-3.2.1.min.js" %}"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
-<div class="container">
-<nav class="navbar">
+<!-- {% bootstrap_css %} -->
+<!-- {% bootstrap_javascript %} -->
+<head>
+  <title>DebateMate</title>
+  <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="{% static 'mainStyles.css' %}" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script><script src="{% static "js/jquery-3.2.1.min.js" %}"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+</head>
+<body class="background">
+<nav class="navbar navbar-inverse">
   <a class="navbar-brand" href="#">DebateMate</a>
-  <button class="btn btn-outline-success my-2 my-sm-0" id="debate" type="button">Debate</button>
+  <button class="btn btn-outline-success my-2 my-sm-0" id="debate" type="button">Join Debate</button>
 </nav>
 <h3>Welcome to the daily debate!</h3>
 {% if debate_feed %}
@@ -21,7 +27,7 @@
 {% else %}
     <p>No debates are available.</p>
 {% endif %}
-</div>
+
 
 <!-- Ben: Future implementation for the Join popup box. -->
 <div class="modal fade" id="joinDebateModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -45,3 +51,4 @@
         $('#joinDebateModal').modal('show');
     });
 </script>
+</body>

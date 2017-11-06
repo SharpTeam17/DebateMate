@@ -1,0 +1,5 @@
+/* NOTE: Any non bootstrap CSS that needs to happen, override or not */
+.background{
+  background-image:url('images/bg-home.png');
+  color: white;
+}
