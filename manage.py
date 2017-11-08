@@ -32,4 +32,10 @@ if __name__ == "__main__":
     from django.core.management import execute_from_command_line
 
     read_env()
+    print('Using secret key: ' + os.environ['SECRET_KEY'])
+    print('Using database name: ' + os.environ['DATABASE_NAME'])
+    print('Using database user: ' + os.environ['DATABASE_USER'])
+    print('Using database password: ' + os.environ['DATABASE_PASSWORD'])
+    print('Using database host: ' + os.environ['DATABASE_HOST'])
+    print('Using database port: ' + os.environ['DATABASE_PORT'])
     execute_from_command_line(sys.argv)
