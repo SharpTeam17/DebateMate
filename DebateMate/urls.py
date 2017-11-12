@@ -16,8 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from main import views
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.home, name='home')
+    url(r'^$', views.home, name='home'),
+	url(r'^signup/$', views.signup, name='signup'),
+	url(r'^login/$', auth_views.login, {'template_name': 'main/login.html'}, name='login'),
+	#for when logging out is implementes
+    #url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
 ]

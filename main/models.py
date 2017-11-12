@@ -2,14 +2,14 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-class User(models.Model):
-	ROLE_CHOICES = (('S', 'Spectator'),('D', 'Debater'),('A', 'Administrator'))
+class UserInfo(models.Model): #stores additional info not in built-in User model
+    SIDE_CHOICES = (('A', 'A'), ('B', 'B'), ('N', 'Not on side'))
 	
-	username = models.CharField(max_length = 15, unique = True)
-	current_role = models.CharField(max_length = 1, choices = ROLE_CHOICES, default = 'S')
-	admin_capable = models.BooleanField(default = 'N') #whether or not the user is allowed to switch to admin role
+    user = models.ForeignKey(User, unique=True)
+    current_side = models.CharField(max_length = 1, choices = SIDE_CHOICES, default = 'N')
 
 class DailyDebate(models.Model):
 	STATUS_CHOICES = (('N', 'Not started'),('O', 'Open'),('V', 'In voting'),('C', 'Complete'))
