@@ -1,5 +1,6 @@
 {% load static %}
 
+<<<<<<< HEAD
 <html>
     <head>
         <title>DebateMate</title>
@@ -10,11 +11,23 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+=======
+<head>
+    <title>DebateMate</title>
+    <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/mainStyles.css" %}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    i ntegrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+>>>>>>> df975e563b96d347e6c53f1726ebe226a5150bdc
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     </head>
 
+<<<<<<< HEAD
     <body>
         <nav class="navbar navbar-inverse">
             <img src="{% static "images/debatemate_logo.png" %}" width="189" height="40" alt="DebateMate">
@@ -32,6 +45,82 @@
                 <p class="card-text">{{ post.debaterArgument }}</p>
                 <a href="#" class="btn btn-primary" style="background-color:black; border-color:#D4F0FF">Reply to this argument.</a>
             </div>
+=======
+<body>
+  <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <img src="{% static "images/debatemate_logo.png" %}" width="189" height="40" alt="DebateMate">
+          </div>
+          <button class="btn clearButton" id="debate" type="button" onclick="myFunction()">Join Debate</button>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              {% if user.is_authenticated %}
+              <li class="active" style="color:white">Welcome, {{request.user.username}} <span class="sr-only">(current)</span>
+              </li>
+              {% else %}
+              <li><a href="/login">Login Page</a>
+              </li>
+              {% endif %}
+
+              <li><a href="#">Potential ViewDebateRules</a>
+              </li>
+              <li><a href="#">Potential UserSettings</a>
+              </li>
+              <li><a href="#">Potential OldDebates</a>
+              </li>
+              <li><a href="#">Potential Help/Feedback Page</a>
+              </li>
+              <li>
+                <form action="/logout/" method="post">
+                  <button type="submit" class="btn btn-link btn-logout">Logout</button>
+                </form>
+              </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+      </nav>
+
+
+    {% if debate_feed %}
+      <h3 style="text-align:center">Welcome to the daily debate!</h3>
+      {{debate_feed.debateTopic}}<br/>{{debate_feed.debateState}}
+
+    {% for post in debate_feed.postList %}
+    <div class="card w-75" style="margin:auto">
+        <div class="card-body" style="color: black;">
+            <h4 class="card-title">{{post.debaterSide}}</h4>
+            <h5 class="card-title">By Debater: {{ post.debaterName }}</h5>
+            <p class="card-text">{{ post.debaterArgument }}</p>
+            <a href="#" class="btn btn-primary" style="background-color:black; border-color:#D4F0FF">Reply to this argument.</a>
+        </div>
+    </div>
+    <br/>
+    <div class="card w-50" style="margin:auto">
+        <div class="card-body" style="color: black; ">
+            <h6 class="card-title">Responses</h6>
+            {% for reply in post.replies %}
+                <p class="card-text">{{ reply.commentersName }}- {{ reply.reply }}</p>
+            {% endfor %}
+    <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
+>>>>>>> df975e563b96d347e6c53f1726ebe226a5150bdc
         </div>
         <br/>
         <div class="card w-50" style="margin:auto">
@@ -43,6 +132,7 @@
         <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
             </div>
         </div>
+<<<<<<< HEAD
         <br/><hr class="fancyHR"/><br/>
         {% endfor %}
         {% else %}
@@ -50,3 +140,12 @@
         {% endif %}
     </body>
 </html>
+=======
+    </div>
+    <script>
+        function myFunction(){
+            $('#myModal').modal('show')
+        }
+    </script>
+</body>
+>>>>>>> df975e563b96d347e6c53f1726ebe226a5150bdc
