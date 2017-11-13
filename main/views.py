@@ -3,11 +3,10 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from main.models import UserInfo
-
 # Create your views here.
 def home(request):
     debate_feed = {}
@@ -16,7 +15,12 @@ def home(request):
         'debate_feed': debate_feed,
     }
     return HttpResponse(template.render(context, request))
-	
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

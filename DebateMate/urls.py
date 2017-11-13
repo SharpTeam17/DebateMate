@@ -25,5 +25,5 @@ urlpatterns = [
 	url(r'^signup/$', views.signup, name='signup'),
 	url(r'^login/$', auth_views.login, {'template_name': 'main/login.html'}, name='login'),
 	#for when logging out is implementes
-    #url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
+    url(r'^logout', views.logout_view, name='logout'),
 ]
