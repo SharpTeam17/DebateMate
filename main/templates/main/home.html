@@ -49,11 +49,13 @@
                </li>
                <li><a href="#">Potential Help/Feedback Page</a>
                </li>
+               {% if user.is_authenticated %}
                <li>
                  <form action="/logout/" method="get">
                    <button type="submit" class="btn btn-link btn-logout">Logout</button>
                </form>
                </li>
+               {% endif %}
              </ul>
            </div>
            <!-- /.navbar-collapse -->
