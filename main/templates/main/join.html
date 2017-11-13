@@ -1,15 +1,14 @@
+{% extends 'main/home.html' %}
 {% load crispy_forms_tags %}
 
-{% extends 'main/home.html' %}
-
-{% block content%}
-        <div class="container">
-            <div class="row">
-                {% if logged_in %}
-                    {% crispy form %}
-                {% else %}
-                    <h3>You need to be logged in to join the Debate.</h3>
-                {% endif %}
-            </div>
+{% block content %}
+    <div class="container">
+        <div class="row">
+        {% if user.is_authenticated %}
+            {% crispy form %}
+        {% else %}
+            <p style="text-align:center">You need to be logged in to join the Debate.</p>
+        {% endif %}
         </div>
-{% endblock%}
+    </div>
+{% endblock %}
