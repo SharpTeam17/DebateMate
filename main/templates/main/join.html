@@ -2,8 +2,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-5">
         {% if user.is_authenticated %}
             {% crispy form %}
         {% else %}
@@ -11,4 +12,5 @@
         {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}

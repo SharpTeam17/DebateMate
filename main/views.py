@@ -51,4 +51,14 @@ def signup(request):
     return render(request, 'main/signup.html', {'form': form})
 
 def join(request):
-    return render(request, 'main/join.html', {'form': JoinForm()})
+    if request.method == 'POST':
+        form = JoinForm(request.POST)
+        if form.is_valid():
+            # Returns:
+            # S - Spectator 
+            # D - Debator
+            # M - Moderator
+            role = form.cleaned_data['role']
+    else:
+        form = JoinForm()
+    return render(request, 'main/join.html', {'form': form})

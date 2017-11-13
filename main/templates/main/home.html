@@ -1,7 +1,6 @@
 {% load static %}
 
 <html>
-
 <head>
   <title>DebateMate</title>
   <link rel="icon" href="{% static " images/favicon.ico " %}" type="image/x-icon" />
@@ -14,7 +13,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
     crossorigin="anonymous">
 </head>
-
 <body>
   <!-- Begin Navbar -->
   <nav class="navbar navbar-inverse">
@@ -45,7 +43,7 @@
           </li>
           <li>
             <a href="/logout">
-              <span class="glyphicon glyphicon-log-ou"></span> Log out</a>
+              <span class="glyphicon glyphicon-log-out"></span> Logout</a>
           </li>
         </li>
         {% else %}
@@ -62,7 +60,8 @@
     </div>
   </nav>
   <!-- End Navbar -->
-  {% block content %}{% endblock %}
+  {% block content %}
+    <!-- Plug in anything that implements this template -->
+  {% endblock %}
 </body>
-
 </html>
