@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class UserInfo(models.Model): #stores additional info not in built-in User model
-    SIDE_CHOICES = (('A', 'A'), ('B', 'B'), ('N', 'Not on side'))
+    SIDE_CHOICES = (('A', 'A'), ('B', 'B'), ('N', 'Not on side'), ('S', 'Spectator'))
 	
     user = models.ForeignKey(User, unique=True)
     current_side = models.CharField(max_length = 1, choices = SIDE_CHOICES, default = 'N')
