@@ -13,12 +13,22 @@ from .forms import JoinForm
 # Create your views here.
 def home(request):
     debate_feed = {}
-    template = loader.get_template('main/spectator.html')
     context = {
-        'debate_feed': debate_feed,
+        'debate_feed': debate_feed
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, 'main/spectator.html', context)
 
+def rules(request):
+    context = {
+        'data': 'string data'
+    }
+    return render(request, 'main/rules.html', context)
+
+def help(request):
+    context = {
+        'data': 'string data'
+    }
+    return render(request, 'main/help.html', context)
 
 def logout_view(request):
     logout(request)

@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
 	url(r'^signup/$', views.signup, name='signup'),
+    url(r'^help/$', views.help, name='help'),
+    url(r'^rules/$', views.rules, name='rules'),
 	url(r'^login/$', auth_views.login, {'template_name': 'main/login.html'}, name='login'),
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^join/$', views.join, name='join'),
