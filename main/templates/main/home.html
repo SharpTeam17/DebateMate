@@ -1,75 +1,52 @@
 {% load static %}
 
-<head>
-    <title>DebateMate</title>
-    <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon"/>
-    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="{% static "css/mainStyles.css" %}"/>
-  
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    i ntegrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<html>
+    <head>
+        <title>DebateMate</title>
+        <link rel="icon" href="{% static "images/favicon.ico" %}" type="image/x-icon"/>
+        <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="{% static "css/mainStyles.css" %}"/>
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
 
-<body>
-    <nav class="navbar navbar-inverse">
-        <img src="{% static "images/debatemate_logo.png" %}" width="189" height="40" alt="DebateMate">
-        <button class="btn clearButton" id="debate" type="button" onclick="myFunction()">Join Debate</button>
-    </nav>
-    <h3 style="text-align:center">Welcome to the daily debate!</h3>
-    {% if debate_feed %}
-        {{debate_feed.debateTopic}}<br/>{{debate_feed.debateState}}
-        
-    {% for post in debate_feed.postList %}
-    <div class="card w-75" style="margin:auto">
-        <div class="card-body" style="color: black;">
-            <h4 class="card-title">{{post.debaterSide}}</h4>
-            <h5 class="card-title">By Debater: {{ post.debaterName }}</h5>
-            <p class="card-text">{{ post.debaterArgument }}</p>
-            <a href="#" class="btn btn-primary" style="background-color:black; border-color:#D4F0FF">Reply to this argument.</a>
-        </div>
-    </div>
-    <br/>
-    <div class="card w-50" style="margin:auto">
-        <div class="card-body" style="color: black; ">
-            <h6 class="card-title">Responses</h6>
-            {% for reply in post.replies %}
-                <p class="card-text">{{ reply.commentersName }}- {{ reply.reply }}</p>
-            {% endfor %}
-    <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
-        </div>
-    </div>
-    <br/><hr class="fancyHR"/><br/>
-    {% endfor %}
-    {% else %}
-    <p style="text-align:center">No debates are available. Please check back later.</p>
-    {% endif %}
-
-    <div class="modal" id="myModal" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Join Debate</h4>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h6>Username</h6>
-                </div>
-                <div class="modal-footer" id="join_popup">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Join</button>
-                </div>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <img src="{% static "images/debatemate_logo.png" %}" width="189" height="40" alt="DebateMate">
+            <button class="btn clearButton" id="debate" type="button" href="{% url 'join' %}">Join Debate</button>
+        </nav>
+        <h3 style="text-align:center">Welcome to the daily debate!</h3>
+        {% if debate_feed %}
+            {{debate_feed.debateTopic}}<br/>{{debate_feed.debateState}}
+            
+        {% for post in debate_feed.postList %}
+        <div class="card w-75" style="margin:auto">
+            <div class="card-body" style="color: black;">
+                <h4 class="card-title">{{post.debaterSide}}</h4>
+                <h5 class="card-title">By Debater: {{ post.debaterName }}</h5>
+                <p class="card-text">{{ post.debaterArgument }}</p>
+                <a href="#" class="btn btn-primary" style="background-color:black; border-color:#D4F0FF">Reply to this argument.</a>
             </div>
         </div>
-    </div>
-    <script>
-        function myFunction(){
-            $('#myModal').modal('show') 
-        }
-    </script>
-</body>
+        <br/>
+        <div class="card w-50" style="margin:auto">
+            <div class="card-body" style="color: black; ">
+                <h6 class="card-title">Responses</h6>
+                {% for reply in post.replies %}
+                    <p class="card-text">{{ reply.commentersName }}- {{ reply.reply }}</p>
+                {% endfor %}
+        <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
+            </div>
+        </div>
+        <br/><hr class="fancyHR"/><br/>
+        {% endfor %}
+        {% else %}
+        <p style="text-align:center">No debates are available. Please check back later.</p>
+        {% endif %}
+    </body>
+</html>
