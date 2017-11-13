@@ -13,7 +13,7 @@ from .forms import JoinForm
 # Create your views here.
 def home(request):
     debate_feed = {}
-    template = loader.get_template('main/home.html')
+    template = loader.get_template('main/spectator.html')
     context = {
         'debate_feed': debate_feed,
     }
@@ -42,4 +42,3 @@ def signup(request):
 
 def join(request):
     return render(request, 'main/join.html', {'form': JoinForm()})
-    

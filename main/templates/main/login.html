@@ -1,3 +1,5 @@
+{% extends 'main/home.html' %}
+
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -7,4 +9,7 @@
     {{ form.as_p }}
     <button type="submit">Login</button>
   </form>
+  <div>
+    <a href="/signup"><button type="submit">Sign Up</button></a>
+  </div>
 {% endblock %}
