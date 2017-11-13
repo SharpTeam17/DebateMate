@@ -65,33 +65,8 @@
          <!-- /.container-fluid -->
        </nav>
 
-        <h3 style="text-align:center">Welcome to the daily debate!</h3>
-        {% if debate_feed %}
-            {{debate_feed.debateTopic}}<br/>{{debate_feed.debateState}}
+       {% block content %}
+       {% endblock %}
 
-        {% for post in debate_feed.postList %}
-        <div class="card w-75" style="margin:auto">
-            <div class="card-body" style="color: black;">
-                <h4 class="card-title">{{post.debaterSide}}</h4>
-                <h5 class="card-title">By Debater: {{ post.debaterName }}</h5>
-                <p class="card-text">{{ post.debaterArgument }}</p>
-                <a href="#" class="btn btn-primary" style="background-color:black; border-color:#D4F0FF">Reply to this argument.</a>
-            </div>
-        </div>
-        <br/>
-        <div class="card w-50" style="margin:auto">
-            <div class="card-body" style="color: black; ">
-                <h6 class="card-title">Responses</h6>
-                {% for reply in post.replies %}
-                    <p class="card-text">{{ reply.commentersName }}- {{ reply.reply }}</p>
-                {% endfor %}
-        <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
-            </div>
-        </div>
-        <br/><hr class="fancyHR"/><br/>
-        {% endfor %}
-        {% else %}
-        <p style="text-align:center">No debates are available. Please check back later.</p>
-        {% endif %}
     </body>
 </html>
