@@ -7,12 +7,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from main.models import UserInfo
-<<<<<<< HEAD
 
 from .forms import JoinForm
 
-=======
->>>>>>> df975e563b96d347e6c53f1726ebe226a5150bdc
 # Create your views here.
 def home(request):
     debate_feed = {}
@@ -42,10 +39,7 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'main/signup.html', {'form': form})
-<<<<<<< HEAD
 
 def join(request):
     return render(request, 'main/join.html', {'form': JoinForm()})
     
-=======
->>>>>>> df975e563b96d347e6c53f1726ebe226a5150bdc
