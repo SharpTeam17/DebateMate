@@ -1,0 +1,12 @@
+{% extends 'main/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content%}
+<h1>testtesttest</h1>
+{% if user.is_authenticated %}
+	<h3>Set today's debate topic:</h3>
+	<br>
+	{%  crispy form  %}
+	
+{% endif %}
+{% endblock%}
