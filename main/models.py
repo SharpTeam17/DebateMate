@@ -14,6 +14,7 @@ class UserInfo(models.Model): #stores additional info not in built-in User model
 class DailyDebate(models.Model):
 	STATUS_CHOICES = (('N', 'Not started'),('O', 'Open'),('V', 'In voting'),('C', 'Complete'))
 	
+	#start_date = models.DateField(auto_now_add = True, null = True)
 	topic = models.TextField()
 	status = models.CharField(max_length = 2, choices = STATUS_CHOICES, default = 'N')
 		

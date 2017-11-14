@@ -19,3 +19,11 @@ class JoinForm(forms.Form):
     helper.form_method = 'POST'
     helper.add_input(Submit('join', 'Join', css_class="btn-primary"))
     helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
+	
+class TopicForm(forms.Form):
+    topic = forms.CharField(label = 'Debate topic:', required = True)
+	
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.add_input(Submit('set_topic', 'Set topic', css_class="btn-primary"))
+    helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
