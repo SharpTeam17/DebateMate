@@ -1,12 +1,10 @@
 {% load static %}
 
 <html>
-
 <head>
   <title>DebateMate</title>
   <link rel="icon" href="{% static " images/favicon.ico " %}" type="image/x-icon" />
   <link rel="shortcut icon" href="{% static " images/favicon.ico " %}" type="image/x-icon" />
-  <link rel="stylesheet" type="text/css" href="{% static " css/mainStyles.css " %}"/>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -15,7 +13,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
     crossorigin="anonymous">
 </head>
-
 <body>
   <!-- Begin Navbar -->
   <nav class="navbar navbar-inverse">
@@ -28,42 +25,43 @@
           <a href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a href="#">Rules</a>
+          <a href="/rules">Rules</a>
         </li>
         <li class="nav-item">
           <a href="#">Potential OldDebates</a>
         </li>
         <li class="nav-item">
-          <a href="#">Help/Feedback</a>
+          <a href="/help">Help/Feedback</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-
         {% if user.is_authenticated %}
         <li>
           <li>
+            <a href="/join">
+              <span class="glyphicon glyphicon-info-sign"></span> Join</a>
+          </li>
+          <li>
             <a href="/logout">
-              <span class="glyphicon glyphicon-log-ou"></span> Log out1</a>
+              <span class="glyphicon glyphicon-log-out"></span> Logout</a>
           </li>
         </li>
         {% else %}
         <li>
-          <a href="/login">
-            <span class="glyphicon glyphicon-log-in"></span> Login</a>
-        </li>
-        <li>
           <a href="/signup">
             <span class="glyphicon glyphicon-user"></span> Sign Up</a>
         </li>
+        <li>
+          <a href="/login">
+            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+          </li>
         {% endif %}
-
       </ul>
     </div>
   </nav>
   <!-- End Navbar -->
-
-  {% block content %} {% endblock %}
-
+  {% block content %}
+    <!-- Plug in anything that implements this template -->
+  {% endblock %}
 </body>
-
 </html>

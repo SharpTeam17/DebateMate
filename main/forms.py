@@ -3,16 +3,15 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field
 
 class JoinForm(forms.Form):
-    text_input = forms.CharField(label = 'Username', required = True)
-
-    radio_buttons = forms.ChoiceField(
+    role = forms.ChoiceField(
         choices = (
-            ('side_debator', 'Debators'),
-            ('side_moderator', 'Moderators')
+            ('S', 'Spectator'),
+            ('D', 'Debator'),
+            ('M', 'Moderator')
         ),
         widget = forms.RadioSelect,
-        label ='Side',
-        initial ='Debator'
+        label ='Select a Role',
+        initial = 'S',
     )
 
     helper = FormHelper()

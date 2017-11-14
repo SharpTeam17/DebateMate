@@ -19,10 +19,20 @@ def home(request):
     template = loader.get_template('main/spectator.html')
     context = {
         'debate_feed': debate_feed,
-		'name': name
-    }
-    return HttpResponse(template.render(context, request))
+		'name': name }
+    return render(request, 'main/spectator.html', context)
 
+def rules(request):
+    context = {
+        'data': 'string data'
+    }
+    return render(request, 'main/rules.html', context)
+
+def help(request):
+    context = {
+        'data': 'string data'
+    }
+    return render(request, 'main/help.html', context)
 
 def logout_view(request):
     logout(request)
@@ -45,7 +55,17 @@ def signup(request):
     return render(request, 'main/signup.html', {'form': form})
 
 def join(request):
-    return render(request, 'main/join.html', {'form': JoinForm()})
+    if request.method == 'POST':
+        form = JoinForm(request.POST)
+        if form.is_valid():
+            # Returns:
+            # S - Spectator 
+            # D - Debator
+            # M - Moderator
+            role = form.cleaned_data['role']
+    else:
+        form = JoinForm()
+    return render(request, 'main/join.html', {'form': form})
 
 def set_debate(request):
     current_user = request.user
