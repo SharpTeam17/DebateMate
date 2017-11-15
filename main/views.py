@@ -85,9 +85,11 @@ def join(request):
             role = form.cleaned_data['role']
             side = form.cleaned_data['side']
             current_user = request.user
-            profile = UserInfo.objects.filter(user = current_user)
+            profile = UserInfo.objects.get(user = current_user)
+            profile.current_role = role
             if role == 'S' or role == 'D':
                 profile.current_side = side
+                profile.save()
             return redirect('home')
     else:
         form = JoinForm()
