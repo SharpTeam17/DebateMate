@@ -7,17 +7,18 @@ from datetime import date
 
 # Create your models here.
 class UserInfo(models.Model): #stores additional info not in built-in User model
-    SIDE_CHOICES = (('A', 'A'), ('B', 'B'), ('N', 'Not on side'), ('S', 'Spectator'))
-	
+    SIDE_CHOICES = (('A', 'A'), ('B', 'B'), ('N', 'Not on side'))
+    ROLE_CHOICES = (('S', 'Spectator'), ('D', 'Debater'), ('M', 'Moderator'))
+    
     user = models.ForeignKey(User, unique=True)
     current_side = models.CharField(max_length = 1, choices = SIDE_CHOICES, default = 'N')
-
+    current_role = models.CharField(max_length = 1, choices = ROLE_CHOICES, default = 'S')
 class DailyDebate(models.Model):
     STATUS_CHOICES = (('N', 'Not started'),('O', 'Open'),('V', 'In voting'),('C', 'Complete'))
     
-    #start_date = models.Date(Time?)Field(auto_now_add = True)
+    start_date = models.DateTimeField(auto_now_add = True)
     topic = models.TextField()
-    status = models.CharField(max_length = 2, choices = STATUS_CHOICES, default = 'N')
+    status = models.CharField(max_length = 1, choices = STATUS_CHOICES, default = 'N')
     is_current_debate = models.BooleanField(default = False)
 	
 class Argument(models.Model):	
