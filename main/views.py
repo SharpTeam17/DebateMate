@@ -5,32 +5,36 @@ from django.template import loader
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from main.models import UserInfo, DailyDebate
+from main.models import UserInfo, DailyDebate, Argument
 from datetime import date
 
 from .forms import JoinForm, TopicForm, MakePostForm
 
 # Create your views here.
 def home(request):
+    return render(request, 'main/home.html')
+def debate(request):
     current_user = request.user
     name = current_user.username
     profile = UserInfo.objects.get(user = current_user)
     if request.method == 'POST':
-        form = MakePostForm()
+        form = MakePostForm(request.POST)
         if form.is_valid():
-            form.save()
             temp_content = form.cleaned_data['content']
             #author, side, content
-            profile = UserInfo.objects.filter(user = current_user)
             temp_author = current_user
             temp_side = profile.current_side
-            post = Argument(author = temp_author, side = temp_side, content = temp_content)
-            return render(request, 'home')
+            current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
+            new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
+            new_post.save()
+            return render(request, 'debate')
+        return render(request, 'home')
     if current_user.is_authenticated() and (profile.current_side == 'A' or profile.current_side == 'B'):
         current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
-        debate_feed = Argument.objects.filter(parent_debate = current_debate).order_by(initial_post_date)
+        debate_feed = Argument.objects.filter(parent_debate = current_debate)
+        debate_feed = debate_feed.order_by('-initial_post_date')
         topic = current_debate.topic
-        template = loader.get_template('main/spectator.html')
+        template = loader.get_template('main/debate.html')
         form = MakePostForm()
         context = {
             'debate_feed': debate_feed,
@@ -38,7 +42,7 @@ def home(request):
             'topic': topic,
             'form': form,
             }
-        return render(request, 'main/spectator.html', context)
+        return render(request, 'main/debate.html', context)
     else:
         return render(request, 'main/login.html')
 

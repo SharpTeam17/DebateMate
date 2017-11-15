@@ -4,7 +4,7 @@
 {% block content%}
 <h3 style="text-align:center">Welcome to the daily debate!</h3>
 {% if debate_feed %}
-    {{topic}}<br/>
+   <h1> {{topic}}</h1><br/>
 
 {% for post in debate_feed %}
 <div class="card w-75" style="margin:auto">
@@ -26,10 +26,11 @@
     Vote button maybe <a href="#" class="btn btn-primary">Button</a>
     </div>
 </div> -->
-Post an argument: <br>
-{% crispy form %}
 <br/><hr class="fancyHR"/><br/>
 {% endfor %}
+
+{% crispy form %}
+
 {% else %}
 <p style="text-align:center">No debates are available. Please check back later.</p>
 {% endif %}

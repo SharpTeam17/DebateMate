@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^join/$', views.join, name='join'),
 	url(r'^set_debate/$', views.set_debate, name='set_debate'),
+    url(r'^debate/$', views.debate, name='debate'),
 ]
