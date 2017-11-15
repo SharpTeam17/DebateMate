@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 # Create your models here.
 class UserInfo(models.Model): #stores additional info not in built-in User model
@@ -12,12 +13,13 @@ class UserInfo(models.Model): #stores additional info not in built-in User model
     current_side = models.CharField(max_length = 1, choices = SIDE_CHOICES, default = 'N')
 
 class DailyDebate(models.Model):
-	STATUS_CHOICES = (('N', 'Not started'),('O', 'Open'),('V', 'In voting'),('C', 'Complete'))
+    STATUS_CHOICES = (('N', 'Not started'),('O', 'Open'),('V', 'In voting'),('C', 'Complete'))
+    
+    #start_date = models.Date(Time?)Field(auto_now_add = True)
+    topic = models.TextField()
+    status = models.CharField(max_length = 2, choices = STATUS_CHOICES, default = 'N')
+    is_current_debate = models.BooleanField(default = False)
 	
-	#start_date = models.DateField(auto_now_add = True, null = True)
-	topic = models.TextField()
-	status = models.CharField(max_length = 2, choices = STATUS_CHOICES, default = 'N')
-		
 class Argument(models.Model):	
 	SIDE_CHOICES = (('A', 'A'), ('B', 'B'))
 	
@@ -25,8 +27,8 @@ class Argument(models.Model):
 	#may want to change to SET_NULL if desired post deletion behavior is to preserve the post unless an admin is the one who deletes it
 	side = models.CharField(max_length = 1, choices = SIDE_CHOICES)
 	parent_debate = models.ForeignKey('DailyDebate', on_delete = models.CASCADE)
-	initial_post_date = models.DateField(auto_now_add = True)
-	last_edited_date = models.DateField(auto_now = True)
+	initial_post_date = models.DateTimeField(auto_now_add = True)
+	last_edited_date = models.DateTimeField(auto_now = True)
 	content = models.TextField()
 
 	
@@ -37,6 +39,6 @@ class Comment(models.Model):
 	author = models.ForeignKey(User, on_delete = models.CASCADE)
 	side = models.CharField(max_length = 1, choices = SIDE_CHOICES)
 	parent_debate = models.ForeignKey('DailyDebate', on_delete = models.CASCADE)
-	initial_post_date = models.DateField(auto_now_add = True)
-	last_edited_date = models.DateField(auto_now = True)
+	initial_post_date = models.DateTimeField(auto_now_add = True)
+	last_edited_date = models.DateTimeField(auto_now = True)
 	content = models.TextField()

@@ -3,27 +3,30 @@
 {% block content%}
 <h3 style="text-align:center">Welcome to the daily debate!</h3>
 {% if debate_feed %}
-    {{debate_feed.debateTopic}}<br/>{{debate_feed.debateState}}
+    {{topic}}<br/>
 
-{% for post in debate_feed.postList %}
+{% for post in debate_feed %}
 <div class="card w-75" style="margin:auto">
     <div class="card-body" style="color: black;">
-        <h4 class="card-title">{{post.debaterSide}}</h4>
-        <h5 class="card-title">By Debater: {{ post.debaterName }}</h5>
-        <p class="card-text">{{ post.debaterArgument }}</p>
+        <h4 class="card-title">{{post.side}}</h4>
+        <h5 class="card-title">By Debater: {{ post.author }}</h5>
+        <p class="card-text">{{ post.content }}</p>
         <a href="#" class="btn btn-primary" style="background-color:black; border-color:#D4F0FF">Reply to this argument.</a>
     </div>
 </div>
 <br/>
+<!--
 <div class="card w-50" style="margin:auto">
     <div class="card-body" style="color: black; ">
         <h6 class="card-title">Responses</h6>
         {% for reply in post.replies %}
             <p class="card-text">{{ reply.commentersName }}- {{ reply.reply }}</p>
         {% endfor %}
-<!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
+    Vote button maybe <a href="#" class="btn btn-primary">Button</a>
     </div>
-</div>
+</div> -->
+Post an argument: <br>
+{% crispy form %}
 <br/><hr class="fancyHR"/><br/>
 {% endfor %}
 {% else %}

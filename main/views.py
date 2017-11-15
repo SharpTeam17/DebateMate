@@ -8,19 +8,39 @@ from django.shortcuts import render, redirect
 from main.models import UserInfo, DailyDebate
 from datetime import date
 
-from .forms import JoinForm, TopicForm
+from .forms import JoinForm, TopicForm, MakePostForm
 
 # Create your views here.
 def home(request):
-	
-    debate_feed = {}
     current_user = request.user
     name = current_user.username
-    template = loader.get_template('main/spectator.html')
-    context = {
-        'debate_feed': debate_feed,
-		'name': name }
-    return render(request, 'main/spectator.html', context)
+    profile = UserInfo.objects.get(user = current_user)
+    if request.method == 'POST':
+        form = MakePostForm()
+        if form.is_valid():
+            form.save()
+            temp_content = form.cleaned_data['content']
+            #author, side, content
+            profile = UserInfo.objects.filter(user = current_user)
+            temp_author = current_user
+            temp_side = profile.current_side
+            post = Argument(author = temp_author, side = temp_side, content = temp_content)
+            return render(request, 'home')
+    if current_user.is_authenticated() and (profile.current_side == 'A' or profile.current_side == 'B'):
+        current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
+        debate_feed = Argument.objects.filter(parent_debate = current_debate).order_by(initial_post_date)
+        topic = current_debate.topic
+        template = loader.get_template('main/spectator.html')
+        form = MakePostForm()
+        context = {
+            'debate_feed': debate_feed,
+            'name': name,
+            'topic': topic,
+            'form': form,
+            }
+        return render(request, 'main/spectator.html', context)
+    else:
+        return render(request, 'main/login.html')
 
 def rules(request):
     context = {
@@ -63,6 +83,12 @@ def join(request):
             # D - Debator
             # M - Moderator
             role = form.cleaned_data['role']
+            side = form.cleaned_data['side']
+            current_user = request.user
+            profile = UserInfo.objects.filter(user = current_user)
+            if role == 'S' or role == 'D':
+                profile.current_side = side
+            return redirect('home')
     else:
         form = JoinForm()
     return render(request, 'main/join.html', {'form': form})
@@ -72,9 +98,13 @@ def set_debate(request):
     if request.method == 'POST' and current_user.is_staff:
         form = TopicForm(request.POST)
         if form.is_valid():
+            #make old current debate inactive
+            current_debate = DailyDebate.objects.filter(is_current_debate = True)
+            for item in current_debate:
+                item.is_current_debate = False
+            #set new debate
             new_topic = form.cleaned_data['topic']
-            debate = DailyDebate(topic = new_topic)
-            debate.start_date = date.today()
+            debate = DailyDebate(topic = new_topic, is_current_debate = True)
             debate.save()
             return render(request, 'main/add_debate_success.html')
     elif current_user.is_staff:
