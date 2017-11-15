@@ -10,7 +10,7 @@ class JoinForm(forms.Form):
     role = forms.ChoiceField(
         choices = (
             (SPECTATOR, 'Spectator'),
-            (DEBATOR, 'Debator'),
+            (DEBATOR, 'Debater'),
             (MODERATOR, 'Moderator')
         ),
         widget = forms.RadioSelect,
