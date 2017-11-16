@@ -30,4 +30,6 @@ urlpatterns = [
     url(r'^join/$', views.join, name='join'),
 	url(r'^set_debate/$', views.set_debate, name='set_debate'),
     url(r'^debate/$', views.debate, name='debate'),
+    url(r'^spectate/$', views.spectate, name='spectate'),
+    url(r'^moderate/$', views.moderate, name='moderate'),
 ]

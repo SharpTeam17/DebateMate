@@ -63,5 +63,12 @@ class MakePostForm(forms.Form):
     
     helper = FormHelper()
     helper.form_method = 'POST'
-    helper.add_input(Submit('submit', 'Submit!', css_class="btn-primary"))
+    helper.add_input(Submit('post_submit', 'Submit!', css_class="btn-primary"))
     helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
+    
+class MakeCommentForm(forms.Form):
+    content = forms.CharField(label = 'Post a comment: ', required = True)
+    
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.add_input(Submit('comment_submit', 'Submit!', css_class="btn-primary"))

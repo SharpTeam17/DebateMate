@@ -4,7 +4,7 @@
 {% block content%}
 <h3 style="text-align:center">Welcome to the daily debate, {{ name }}!</h3>
 {% if debate_feed %}
-   <h1> {{topic}}</h1><br/>
+    {{topic}}<br/>
 
 {% for post in debate_feed %}
 <div class="card w-75" style="margin:auto">
@@ -12,7 +12,6 @@
         <h4 class="card-title">{{post.side}}</h4>
         <h5 class="card-title">By Debater: {{ post.author }}</h5>
         <p class="card-text">{{ post.content }}</p>
-        {% crispy comment_form %}
     </div>
 </div>
 <br/>
@@ -31,10 +30,8 @@
     </div>
 </div>
 <br/><hr class="fancyHR"/><br/>
+
 {% endfor %}
-
-{% crispy post_form %}
-
 {% else %}
 <p style="text-align:center">No debates are available. Please check back later.</p>
 {% endif %}

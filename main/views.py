@@ -5,47 +5,113 @@ from django.template import loader
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from main.models import UserInfo, DailyDebate, Argument
+from main.models import UserInfo, DailyDebate, Argument, Comment
 from datetime import date
 
-from .forms import JoinForm, TopicForm, MakePostForm
+from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm
 
 # Create your views here.
 def home(request):
-    return render(request, 'main/home.html')
+    #redirect user as appropriate:
+        #not logged in = go to log in page (until top comments or other preview is implemented)
+        #no role goes to join page
+        #Spectator goes to spectator view regardless of other factors
+        #mod goes to admin page regardless of other factors
+        #debater goes to join page if no side, goes to debate page if side chosen
+    current_user = request.user
+    if current_user.is_staff and (not UserInfo.objects.filter(user = current_user)):
+        profile = UserInfo(user = current_user, current_role = 'M', current_side = 'N')
+        profile.save()
+    if current_user.is_authenticated:
+        profile = UserInfo.objects.get(user = current_user)
+        if profile.current_role == 'N':
+            return redirect('join')
+        elif profile.current_role == 'S':
+            return redirect('spectator')
+        elif profile.current_role == 'M' and current_user.is_staff:
+            return redirect('moderate')
+        elif profile.current_role == 'D':
+            if profile.current_side == 'A' or profile.current_side == 'B':
+                return redirect('debate')
+            else:
+                return redirect('join')
+    else:
+        return redirect('login')
+
 def debate(request):
     current_user = request.user
     name = current_user.username
     profile = UserInfo.objects.get(user = current_user)
-    if request.method == 'POST':
-        form = MakePostForm(request.POST)
-        if form.is_valid():
-            temp_content = form.cleaned_data['content']
-            #author, side, content
-            temp_author = current_user
-            temp_side = profile.current_side
-            current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
-            new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
-            new_post.save()
-            return render(request, 'debate')
-        return render(request, 'home')
-    if current_user.is_authenticated() and (profile.current_side == 'A' or profile.current_side == 'B'):
+    
+    if request.method == 'POST': #if page was reached after submitting form...
+        if 'comment_submit' in request.POST: #differentiate between comment form or post form
+            comment_form = MakeCommentForm
+            if form.is_valid():
+                temp_content = form.cleaned_data['content']
+                #temp_parent = 
+                temp_author = current_user
+                temp_side = profile.current_side
+                current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
+                new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
+                new_post.save()
+                return render(request, 'main/debate.html')
+
+        if 'post_submit' in request.POST:
+            form = MakePostForm(request.POST)
+            if form.is_valid():
+                temp_content = form.cleaned_data['content']
+                temp_author = current_user
+                temp_side = profile.current_side
+                current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
+                new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
+                new_post.save()
+                return render(request, 'main/debate.html')
+    #check if user is logged in, a debater, and on a side
+    if current_user.is_authenticated() and (profile.current_side == 'A' or profile.current_side == 'B') and (profile.current_role == 'D'):
         current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
         debate_feed = Argument.objects.filter(parent_debate = current_debate)
         debate_feed = debate_feed.order_by('-initial_post_date')
+        comment_set = Comment.objects.filter(parent_debate=current_debate)
+        comments = {}
+        for item in debate_feed:
+            comments[item] = comment_set.filter(parent_post=item)
         topic = current_debate.topic
         template = loader.get_template('main/debate.html')
-        form = MakePostForm()
+        post_form = MakePostForm()
+        comment_form = MakeCommentForm()
         context = {
             'debate_feed': debate_feed,
+            'comments': comments,
             'name': name,
             'topic': topic,
-            'form': form,
+            'post_form': post_form,
+            'comment_form': comment_form,
             }
         return render(request, 'main/debate.html', context)
     else:
         return render(request, 'main/login.html')
+        
+def moderate(request):
+    return render(request, 'main/moderate.html')
 
+def spectate(request):
+    name = request.user.username
+    current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
+    debate_feed = Argument.objects.filter(parent_debate = current_debate)
+    debate_feed = debate_feed.order_by('-initial_post_date')
+    comment_set = Comment.objects.filter(parent_debate=current_debate)
+    comments = {}
+    for item in debate_feed:
+        comments[item] = comment_set.filter(parent_post=item)
+    topic = current_debate.topic
+    context = {
+        'debate_feed': debate_feed,
+        'comments': comments,
+        'name': name,
+        'topic': topic,
+        }
+    return render(request, 'main/spectate.html', context)
+        
 def rules(request):
     context = {
         'data': 'string data'
@@ -116,4 +182,4 @@ def set_debate(request):
     elif current_user.is_staff:
         return render(request, 'main/set_debate.html', {'form': TopicForm()})
     else:
-        return redirect('home')
+        return render(request, 'main/staff_only.html')
