@@ -27,7 +27,7 @@ def home(request):
         if profile.current_role == 'N':
             return redirect('join')
         elif profile.current_role == 'S':
-            return redirect('spectator')
+            return redirect('spectate')
         elif profile.current_role == 'M' and current_user.is_staff:
             return redirect('moderate')
         elif profile.current_role == 'D':
@@ -35,6 +35,7 @@ def home(request):
                 return redirect('debate')
             else:
                 return redirect('join')
+        return redirect('join')
     else:
         return redirect('login')
 
