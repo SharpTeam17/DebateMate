@@ -4,15 +4,15 @@
 {% block content%}
 <h3 style="text-align:center">Welcome to the daily debate, {{ name }}!</h3>
 {% if debate_feed %}
-   <h1> {{topic}}</h1><br/>
+   <h1 style="text-align:center"> {{topic}}</h1><br/>
 
 {% for post in debate_feed %}
 <div class="card w-75" style="margin:auto">
     <div class="card-body" style="color: black;">
-        <h4 class="card-title">{{post.side}}</h4>
         <h5 class="card-title">By Debater: {{ post.author }}</h5>
+        <h5 class="card-title">Side: {{post.side}}</h5>
         <p class="card-text">{{ post.content }}</p>
-        {% crispy comment_form %}
+        <!-- {% crispy comment_form %} -->
     </div>
 </div>
 <br/>
@@ -22,7 +22,8 @@
         {% for key, value in comments.items %}
             {% if key == post %}
                 {% for item in value %}
-                    <h4>{{ item.author.username }} {{ item.content }}</h4>
+                    <h5 class="card-title">{{ item.author.username }}</h5>
+                    <p class="card-text">{{ item.content }}</p>
                 {% endfor %}
             {% endif %}
         {% endfor %}
