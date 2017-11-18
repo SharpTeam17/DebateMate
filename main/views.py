@@ -12,7 +12,7 @@ from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm
 
 def make_context(current_user):
     name = current_user.username
-    current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
+    current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
     debate_feed = debate_feed.order_by('-initial_post_date')
     comment_set = Comment.objects.filter(parent_debate=current_debate)

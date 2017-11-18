@@ -37,6 +37,8 @@
 {% crispy post_form %}
 
 {% else %}
-<p style="text-align:center">No debates are available. Please check back later.</p>
+    <h1 style="text-align:center"> {{topic}}</h1><br/>
+    <p style="text-align:center">No posts yet, would you like to start off the discussion?</p>
+    {% crispy post_form %}
 {% endif %}
 {% endblock%}
