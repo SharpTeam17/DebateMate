@@ -10,6 +10,28 @@ from datetime import date
 
 from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm
 
+def make_context(current_user):
+    name = current_user.username
+    current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
+    debate_feed = Argument.objects.filter(parent_debate = current_debate)
+    debate_feed = debate_feed.order_by('-initial_post_date')
+    comment_set = Comment.objects.filter(parent_debate=current_debate)
+    comments = {}
+    for item in debate_feed:
+        comments[item] = comment_set.filter(parent_post=item)
+    topic = current_debate.topic
+    post_form = MakePostForm()
+    comment_form = MakeCommentForm()
+    context = {
+        'debate_feed': debate_feed,
+        'comments': comments,
+        'name': name,
+        'topic': topic,
+        'post_form': post_form,
+        'comment_form': comment_form,
+        }
+    return context
+
 # Create your views here.
 def home(request):
     #redirect user as appropriate:
@@ -55,7 +77,10 @@ def debate(request):
                 current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
                 new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
                 new_post.save()
-                return render(request, 'main/debate.html')
+                
+                context = make_context(current_user)
+                
+                return render(request, 'main/debate.html', context)
 
         if 'post_submit' in request.POST:
             form = MakePostForm(request.POST)
@@ -66,28 +91,13 @@ def debate(request):
                 current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
                 new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
                 new_post.save()
-                return render(request, 'main/debate.html')
+                
+                context = make_context(current_user)
+                return render(request, 'main/debate.html', context)
+                
     #check if user is logged in, a debater, and on a side
     if current_user.is_authenticated() and (profile.current_side == 'A' or profile.current_side == 'B') and (profile.current_role == 'D'):
-        current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
-        debate_feed = Argument.objects.filter(parent_debate = current_debate)
-        debate_feed = debate_feed.order_by('-initial_post_date')
-        comment_set = Comment.objects.filter(parent_debate=current_debate)
-        comments = {}
-        for item in debate_feed:
-            comments[item] = comment_set.filter(parent_post=item)
-        topic = current_debate.topic
-        template = loader.get_template('main/debate.html')
-        post_form = MakePostForm()
-        comment_form = MakeCommentForm()
-        context = {
-            'debate_feed': debate_feed,
-            'comments': comments,
-            'name': name,
-            'topic': topic,
-            'post_form': post_form,
-            'comment_form': comment_form,
-            }
+        context = make_context(current_user)
         return render(request, 'main/debate.html', context)
     else:
         return render(request, 'main/login.html')
@@ -175,6 +185,7 @@ def set_debate(request):
             current_debate = DailyDebate.objects.filter(is_current_debate = True)
             for item in current_debate:
                 item.is_current_debate = False
+                item.save()
             #set new debate
             new_topic = form.cleaned_data['topic']
             debate = DailyDebate(topic = new_topic, is_current_debate = True)
