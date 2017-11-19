@@ -4,18 +4,19 @@
 {% block content%}
 <h3 style="text-align:center">Welcome to the daily debate, {{ name }}!</h3>
 {% if debate_feed %}
-    {{topic}}<br/>
+   <h1 style="text-align:center"> {{topic}}</h1><br/>
 
 {% for post in debate_feed %}
-<div class="card w-75" style="margin:auto">
-    <div class="card-body" style="color: black;">
-        <h4 class="card-title">{{post.side}}</h4>
-        <h5 class="card-title">By Debater: {{ post.author }}</h5>
-        <p class="card-text">{{ post.content }}</p>
+    <div class="card w-75" style="margin:auto">
+        <div class="card-body" style="color: black;">
+            <h5 class="card-title">By Debater: {{ post.author }}</h5>
+            <h5 class="card-title">Side: {{post.side}}</h5>
+            <p class="card-text">{{ post.content }}</p>
+        </div>
     </div>
-</div>
-<br/>
-<div class="card w-50" style="margin:auto">
+    <br/>
+        
+<!-- <div class="card w-50" style="margin:auto">
     <div class="card-body" style="color: black; ">
         <h6 class="card-title">Responses</h6>
         {% for key, value in comments.items %}
@@ -24,7 +25,7 @@
                     <h4>{{ item.author.username }} {{ item.content }}</h4>
                 {% endfor %}
             {% endif %}
-        {% endfor %}
+        {% endfor %} -->
 
     <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
     </div>
@@ -33,6 +34,7 @@
 
 {% endfor %}
 {% else %}
-<p style="text-align:center">No debates are available. Please check back later.</p>
+<h1 style="text-align:center"> {{topic}}</h1><br/>
+    <p style="text-align:center">No posts yet, check back later.</p>
 {% endif %}
 {% endblock%}

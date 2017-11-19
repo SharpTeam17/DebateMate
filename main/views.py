@@ -170,7 +170,7 @@ def join(request):
             profile.current_role = role
             if role == 'S' or role == 'D':
                 profile.current_side = side
-                profile.save()
+            profile.save()
             return redirect('home')
     else:
         form = JoinForm()
