@@ -13,6 +13,7 @@ class UserInfo(models.Model): #stores additional info not in built-in User model
     user = models.ForeignKey(User, unique=True)
     current_side = models.CharField(max_length = 1, choices = SIDE_CHOICES, default = 'N')
     current_role = models.CharField(max_length = 1, choices = ROLE_CHOICES, default = 'S')
+
 class DailyDebate(models.Model):
     STATUS_CHOICES = (('N', 'Not started'),('O', 'Open'),('V', 'In voting'),('C', 'Complete'))
     
@@ -31,7 +32,7 @@ class Argument(models.Model):
 	initial_post_date = models.DateTimeField(auto_now_add = True)
 	last_edited_date = models.DateTimeField(auto_now = True)
 	content = models.TextField()
-
+	source = models.URLField()
 	
 class Comment(models.Model):
 	SIDE_CHOICES = (('A', 'A'), ('B', 'B'))
@@ -43,3 +44,4 @@ class Comment(models.Model):
 	initial_post_date = models.DateTimeField(auto_now_add = True)
 	last_edited_date = models.DateTimeField(auto_now = True)
 	content = models.TextField()
+	source = models.URLField()

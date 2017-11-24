@@ -2,43 +2,24 @@
 {% load crispy_forms_tags %}
 
 {% block content%}
-<h3 style="text-align:center">Welcome to the daily debate, {{ name }}!</h3>
+<div class="container">
+<h3 style="text-align:center">Welcome to the Daily Debate, {{ name }}!</h3>
+<h1 style="text-align:center">{{ topic }}</h1><br/>
 {% if debate_feed %}
-   <h1 style="text-align:center"> {{topic}}</h1><br/>
-
-{% for post in debate_feed %}
-<div class="card w-75" style="margin:auto">
-    <div class="card-body" style="color: black;">
-        <h5 class="card-title">By Debater: {{ post.author }}</h5>
-        <h5 class="card-title">Side: {{post.side}}</h5>
-        <p class="card-text">{{ post.content }}</p>
-        <!-- {% crispy comment_form %} -->
-    </div>
-</div>
-<br/>
-<!-- <div class="card w-50" style="margin:auto">
-    <div class="card-body" style="color: black; ">
-        <h6 class="card-title">Responses</h6>
-        {% for key, value in comments.items %}
-            {% if key == post %}
-                {% for item in value %}
-                    <h5 class="card-title">{{ item.author.username }}</h5>
-                    <p class="card-text">{{ item.content }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endfor %} -->
-
-    <!-- Vote button maybe <a href="#" class="btn btn-primary">Button</a> -->
-    </div>
-</div>
-<br/><hr class="fancyHR"/><br/>
-{% endfor %}
-
-{% crispy post_form %}
-
-{% else %}
-    <h1 style="text-align:center"> {{topic}}</h1><br/>
-    <p style="text-align:center">No posts yet, would you like to start off the discussion?</p>
     {% crispy post_form %}
+    {% for post in debate_feed %}
+        {% if post.side == 'A' %}
+        <div class="jumbotron" style="background-color:crimson">
+        {% elif post.side == 'B' %}
+        <div class="jumbotron" style="background-color:aqua">
+        {% endif %}
+            <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
+            <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
+            <p>{{ post.content }}</p>
+            <p><a href="{{ post.source }}">Source</a></p>
+            {% crispy comment_form %}
+        </div>
+    {% endfor %}
 {% endif %}
+</div>
 {% endblock%}

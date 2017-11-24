@@ -86,10 +86,11 @@ def debate(request):
             form = MakePostForm(request.POST)
             if form.is_valid():
                 temp_content = form.cleaned_data['content']
+                temp_source = form.cleaned_data['source']
                 temp_author = current_user
                 temp_side = profile.current_side
                 current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
-                new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
+                new_post = Argument(author = temp_author, side = temp_side, content = temp_content, source = temp_source, parent_debate = current_debate)
                 new_post.save()
                 
                 context = make_context(current_user)
