@@ -28,17 +28,6 @@ class JoinForm(forms.Form):
         initial = 'S',
     )
 
-    side = forms.ChoiceField(
-        choices = 
-        (
-            ('A', 'A'),
-            ('B', 'B'),
-        ),
-        widget = forms.RadioSelect,
-        label = 'Select a Side',
-        required = False,
-    )
-
     helper = FormHelper()
     helper.form_method = 'POST'
     helper.add_input(Submit('join', 'Join', css_class="btn-primary"))
@@ -59,16 +48,19 @@ class TopicForm(forms.Form):
     helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
     
 class MakePostForm(forms.Form):
-    content = forms.CharField(label = 'Post an argument: ', required = True)
-    
+    content = forms.CharField(label = 'Post an argument: ', required = True, widget=forms.widgets.Textarea(attrs={'rows': 4, 'style':'resize:none;'}))
+    source = forms.URLField(label = 'Post source: ', required = True)
+
     helper = FormHelper()
     helper.form_method = 'POST'
-    helper.add_input(Submit('post_submit', 'Submit!', css_class="btn-primary"))
+    helper.add_input(Submit('post_submit', 'Submit', css_class = "btn-primary"))
     helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
     
 class MakeCommentForm(forms.Form):
-    content = forms.CharField(label = 'Post a comment: ', required = True)
-    
+    content = forms.CharField(label = 'Post a comment: ', required = True, widget=forms.widgets.Textarea(attrs={'rows': 4, 'style':'resize:none;'}))
+    source = forms.URLField(label = 'Post a source: ', required = False)
+
     helper = FormHelper()
     helper.form_method = 'POST'
-    helper.add_input(Submit('comment_submit', 'Submit!', css_class="btn-primary"))
+    helper.add_input(Submit('comment_submit', 'Submit', css_class = "btn-primary"))
+    helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
