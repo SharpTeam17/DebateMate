@@ -17,8 +17,20 @@
             <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
             <p>{{ post.content }}</p>
             <p><a href="{{ post.source }}">Source</a></p>
-            {% crispy comment_form %}
+            <p><a href="/confirm_comment?post_id={{ post.id }}">Comment on this argument</a></p>
         </div>
+        <!-- COMMENTS -->
+        <div class="card w-50" style="margin:auto">
+        <div class="card-body" style="color: black; ">
+        <h6 class="card-title">Comments</h6>
+        {% for key, value in comments.items %}
+            {% if key == post %}
+                {% for item in value %}
+                    <h4>{{ item.author.username }} {{ item.content }}</h4>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
     {% endfor %}
 {% endif %}
 </div>

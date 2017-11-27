@@ -224,3 +224,32 @@ def set_debate(request):
         return render(request, 'main/set_debate.html', {'form': TopicForm()})
     else:
         return render(request, 'main/staff_only.html')
+
+def confirm_comment(request):
+    if request.method == 'POST':
+        form = MakeCommentForm(request.POST)
+        if form.is_valid():
+            current_user = request.user
+            profile = UserInfo.objects.get(user = current_user)
+            
+            temp_content = form.cleaned_data['content']
+            post_id = form.cleaned_data['post_id']
+            temp_source = form.cleaned_data['source']
+            temp_author = current_user
+            temp_side = profile.current_side
+            temp_parent_post = Argument.objects.get(id = post_id)
+            current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
+            
+            new_comment = Comment(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate, parent_post = temp_parent_post)
+            new_comment.save()
+            return redirect('debate')
+    else:
+        post_id = request.GET.get('post_id')
+        parent_post = Argument.objects.get(id = post_id)
+        form = MakeCommentForm(initial = {'post_id': post_id})
+        context = {
+            'post_id': post_id,
+            'parent_post': parent_post,
+            'form': form
+            }
+    return render(request, 'main/confirm_comment.html', context)

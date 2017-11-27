@@ -68,7 +68,8 @@ class MakePostForm(forms.Form):
 class MakeCommentForm(forms.Form):
     content = forms.CharField(label = 'Post a comment: ', required = True, widget=forms.widgets.Textarea(attrs={'rows': 4, 'style':'resize:none;'}))
     source = forms.URLField(label = 'Post a source: ', required = False)
-
+    post_id = forms.IntegerField(widget=forms.HiddenInput())
+    
     helper = FormHelper()
     helper.form_method = 'POST'
     helper.add_input(Submit('comment_submit', 'Submit', css_class = "btn-primary"))
