@@ -1,0 +1,30 @@
+{% extends 'main/home.html' %}
+<!-- {% load crispy_forms_tags %} -->
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-5">
+        {% if user.is_authenticated %}
+          {% if reported_arguments_feed %}
+            {% for post in reported_arguments_feed %}
+              <h2>Reason given: {{post.reasonForBeingReported}} </h2>
+              <div class="jumbotron" style="background-color:aqua">
+                <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
+                <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
+                <p>{{ post.content }}</p>
+                <p><a href="{{ post.source }}">Source</a></p>
+              </div>
+              <br/>
+            {% endfor %}
+          {% else %}
+            <h3>There are no reported arguments currently.</h3>
+            <!-- {% crispy form %} -->
+          {% endif %}
+        {% else %}
+          <h3>You must be logged in as a moderator to use this page.</h3>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

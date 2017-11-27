@@ -8,15 +8,16 @@
         {% if user.is_authenticated %}
           {% if reportedArgument %}
             <h2>Argument in question: </h2>
-            <div class="jumbotron" style="background-color:aqua">
+            <div class="jumbotron" style="background-color:red">
                 <h2 style="text-align:center"><b>Side {{ reportedArgument.side }}</b></h2>
                 <h3 style="text-align:center"><b>Posted by {{ reportedArgument.author }} on {{ reportedArgument.initial_post_date }}</b></h3>
                 <p>{{ reportedArgument.content }}</p>
                 <p><a href="{{ post.source }}">Source</a></p>
             </div>
-          {% endif %}
-          <h3>Please explain why you are reporting this argument.</h3>
+
+            <h3>Please explain why you are reporting this argument.</h3>
             {% crispy form %}
+          {% endif %}
         {% else %}
             <p style="text-align:center">You need to be logged in to report a debater.</p>
         {% endif %}

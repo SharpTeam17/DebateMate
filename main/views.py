@@ -106,6 +106,13 @@ def debate(request):
 def moderate(request):
     return render(request, 'main/moderate.html')
 
+def view_reported_arguments(request):
+    reported_arguments_feed = Argument.objects.filter(isReported = True)
+    context = {
+        'reported_arguments_feed': reported_arguments_feed
+    }
+    return render(request, 'main/view_reported_arguments.html', context)
+
 def spectate(request):
     name = request.user.username
     current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
@@ -130,14 +137,14 @@ def report(request):
         if form.is_valid():
             reason = form.cleaned_data['reason']
             post_id = form.cleaned_data['post_id']
-            reportedArgument = Argument.objects.filter(id = post_id)
+            reportedArgument = Argument.objects.get(id = post_id)
             reportedArgument.isReported = True
             reportedArgument.reasonForBeingReported = reason
-            #reportedArgument.save()
+            reportedArgument.save()
             return redirect('spectate')
     else:
         post_id = request.GET.get('post_id')
-        reportedArgument = Argument.objects.filter(id = post_id)
+        reportedArgument = Argument.objects.get(id = post_id)
         form = ReportForm(initial = {'post_id': post_id})
         context = {
             'reportedArgument': reportedArgument,

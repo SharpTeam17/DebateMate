@@ -18,6 +18,8 @@
             <p><a href="{{ post.source }}">Source</a></p>
             {% if post.isReported == False %}
               <p><a href="/report?post_id={{ post.id }}">Report argument</a></p>
+            {% else %}
+            <p>Reported.</p>
             {% endif %}
         </div>
     {% endfor %}
