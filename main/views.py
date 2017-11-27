@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from main.models import UserInfo, DailyDebate, Argument, Comment
-from datetime import date
+from datetime import date, datetime
 
 from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm, ReportForm
 
@@ -108,10 +108,19 @@ def moderate(request):
 
 def view_reported_arguments(request):
     reported_arguments_feed = Argument.objects.filter(isReported = True)
+    reported_arguments_feed = reported_arguments_feed.order_by('-reportedDate')
     context = {
         'reported_arguments_feed': reported_arguments_feed
     }
     return render(request, 'main/view_reported_arguments.html', context)
+
+def view_reported_comments(request):
+    reported_comments_feed = Comment.objects.filter(isReported = True)
+    reported_comments_feed = reported_comments_feed.order_by('-reportedDate')
+    context = {
+        'reported_comments_feed': reported_comments_feed
+    }
+    return render(request, 'main/view_reported_comments.html', context)
 
 def spectate(request):
     name = request.user.username
@@ -131,7 +140,7 @@ def spectate(request):
         }
     return render(request, 'main/spectate.html', context)
 
-def report(request):
+def report_argument(request):
     if request.method == 'POST':
         form = ReportForm(request.POST)
         if form.is_valid():
@@ -140,6 +149,7 @@ def report(request):
             reportedArgument = Argument.objects.get(id = post_id)
             reportedArgument.isReported = True
             reportedArgument.reasonForBeingReported = reason
+            reportedArgument.reportedDate = datetime.now()
             reportedArgument.save()
             return redirect('spectate')
     else:
@@ -150,7 +160,31 @@ def report(request):
             'reportedArgument': reportedArgument,
             'form': form
             }
-    return render(request, 'main/report.html', context)
+    return render(request, 'main/report_argument.html', context)
+
+def report_comment(request):
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            reason = form.cleaned_data['reason']
+            post_id = form.cleaned_data['post_id']
+            reportedComment = Comment.objects.get(id = post_id)
+            reportedComment.isReported = True
+            reportedComment.reasonForBeingReported = reason
+            reportedComment.reportedDate = datetime.now()
+            reportedComment.save()
+            return redirect('spectate')
+    else:
+        #using post_id here since the report form can be used for arguments and comments
+        post_id = request.GET.get('comment_id')
+        reportedArgument = Argument.objects.get(id = post_id)
+        form = ReportForm(initial = {'post_id': post_id})
+        context = {
+            'reportedComment': reportedComment,
+            'form': form
+            }
+    return render(request, 'main/report_comment.html', context)
+
 
 def rules(request):
     context = {

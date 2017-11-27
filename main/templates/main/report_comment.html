@@ -1,0 +1,26 @@
+{% extends 'main/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-5">
+        {% if user.is_authenticated %}
+          {% if reportedComment %}
+            <h2>Comment in question: </h2>
+            <div class="jumbotron" style="background-color:red">
+                <h3 style="text-align:center"><b>Posted by {{ reportedComment.author }} on {{ reportedComment.initial_post_date }}</b></h3>
+                <p>{{ reportedComment.content }}</p>
+                <p><a href="{{ reportedComment.source }}">Source</a></p>
+            </div>
+
+            <h3>Please explain why you are reporting this comment.</h3>
+            {% crispy form %}
+          {% endif %}
+        {% else %}
+            <p style="text-align:center">You need to be logged in to report a debater.</p>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

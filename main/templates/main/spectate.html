@@ -8,16 +8,16 @@
 {% if debate_feed %}
     {% for post in debate_feed %}
         {% if post.side == 'A' %}
-        <div class="jumbotron" style="background-color:crimson">
+        <div class="jumbotron" style="background-color:pink">
         {% elif post.side == 'B' %}
-        <div class="jumbotron" style="background-color:aqua">
+        <div class="jumbotron" style="background-color:lightblue">
         {% endif %}
             <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
             <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
             <p>{{ post.content }}</p>
             <p><a href="{{ post.source }}">Source</a></p>
             {% if post.isReported == False %}
-              <p><a href="/report?post_id={{ post.id }}">Report argument</a></p>
+              <p><a href="/report_argument?post_id={{ post.id }}">Report argument</a></p>
             {% else %}
             <p>Reported.</p>
             {% endif %}
