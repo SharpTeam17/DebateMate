@@ -16,6 +16,9 @@
             <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
             <p>{{ post.content }}</p>
             <p><a href="{{ post.source }}">Source</a></p>
+            {% if post.isReported == False %}
+              <p><a href="/report?post_id={{ post.id }}">Report argument</a></p>
+            {% endif %}
         </div>
     {% endfor %}
 {% endif %}

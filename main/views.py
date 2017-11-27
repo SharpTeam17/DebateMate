@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from main.models import UserInfo, DailyDebate, Argument, Comment
 from datetime import date
 
-from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm
+from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm, ReportForm
 
 def make_context(current_user):
     name = current_user.username
@@ -65,21 +65,21 @@ def debate(request):
     current_user = request.user
     name = current_user.username
     profile = UserInfo.objects.get(user = current_user)
-    
+
     if request.method == 'POST': #if page was reached after submitting form...
         if 'comment_submit' in request.POST: #differentiate between comment form or post form
             comment_form = MakeCommentForm
             if form.is_valid():
                 temp_content = form.cleaned_data['content']
-                #temp_parent = 
+                #temp_parent =
                 temp_author = current_user
                 temp_side = profile.current_side
                 current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
                 new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
                 new_post.save()
-                
+
                 context = make_context(current_user)
-                
+
                 return render(request, 'main/debate.html', context)
 
         if 'post_submit' in request.POST:
@@ -92,17 +92,17 @@ def debate(request):
                 current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
                 new_post = Argument(author = temp_author, side = temp_side, content = temp_content, source = temp_source, parent_debate = current_debate)
                 new_post.save()
-                
+
                 context = make_context(current_user)
                 return render(request, 'main/debate.html', context)
-                
+
     #check if user is logged in, a debater, and on a side
     if current_user.is_authenticated() and (profile.current_side == 'A' or profile.current_side == 'B') and (profile.current_role == 'D'):
         context = make_context(current_user)
         return render(request, 'main/debate.html', context)
     else:
         return render(request, 'main/login.html')
-        
+
 def moderate(request):
     return render(request, 'main/moderate.html')
 
@@ -123,7 +123,28 @@ def spectate(request):
         'topic': topic,
         }
     return render(request, 'main/spectate.html', context)
-        
+
+def report(request):
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            reason = form.cleaned_data['reason']
+            post_id = form.cleaned_data['post_id']
+            reportedArgument = Argument.objects.filter(id = post_id)
+            reportedArgument.isReported = True
+            reportedArgument.reasonForBeingReported = reason
+            #reportedArgument.save()
+            return redirect('spectate')
+    else:
+        post_id = request.GET.get('post_id')
+        reportedArgument = Argument.objects.filter(id = post_id)
+        form = ReportForm(initial = {'post_id': post_id})
+        context = {
+            'reportedArgument': reportedArgument,
+            'form': form
+            }
+    return render(request, 'main/report.html', context)
+
 def rules(request):
     context = {
         'data': 'string data'
@@ -161,7 +182,7 @@ def join(request):
         form = JoinForm(request.POST)
         if form.is_valid():
             # Returns:
-            # S - Spectator 
+            # S - Spectator
             # D - Debator
             # M - Moderator
             role = form.cleaned_data['role']
