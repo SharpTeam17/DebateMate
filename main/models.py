@@ -24,8 +24,10 @@ class DailyDebate(models.Model):
 
 class Argument(models.Model):
 	SIDE_CHOICES = (('A', 'A'), ('B', 'B'))
+
 	isReported = models.BooleanField(default = False)
 	reasonForBeingReported = models.TextField()
+	reportedDate = models.DateTimeField(auto_now = True)
 
 	author = models.ForeignKey(User, on_delete = models.CASCADE)
 	#may want to change to SET_NULL if desired post deletion behavior is to preserve the post unless an admin is the one who deletes it
@@ -38,6 +40,11 @@ class Argument(models.Model):
 
 class Comment(models.Model):
 	SIDE_CHOICES = (('A', 'A'), ('B', 'B'))
+
+	isReported = models.BooleanField(default = False)
+	reasonForBeingReported = models.TextField()
+	reportedDate = models.DateTimeField(auto_now = True)
+
 
 	parent_post = models.ForeignKey(Argument)
 	author = models.ForeignKey(User, on_delete = models.CASCADE)
