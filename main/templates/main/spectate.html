@@ -15,24 +15,35 @@
             <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
             <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
             <p>{{ post.content }}</p>
-            <p><a href="{{ post.source }}">Source</a></p>
-            {% if post.isReported == False %}
-              <p><a href="/report_argument?post_id={{ post.id }}">Report argument</a></p>
-            {% else %}
-            <p>Reported.</p>
-            {% endif %}
-        </div>
-        <!-- COMMENTS -->
-        <div class="card w-50" style="margin:auto">
-        <div class="card-body" style="color: black; ">
-        <h6 class="card-title">Comments</h6>
-        {% for key, value in comments.items %}
-            {% if key == post %}
-                {% for item in value %}
-                    <h4>{{ item.author.username }} {{ item.content }}</h4>
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
+            <p><a href="{{ post.source }}">Source</a>
+              <span style="text-align:right; float:right">
+                {% if post.isReported == False %}
+                  <a href="/report_argument?post_id={{ post.id }}">Report argument</a></p>
+                {% else %}
+                  Reported.
+                {% endif %}
+              </span>
+            </p>
+            <!-- COMMENTS -->
+            <div class="jumbotron" style="background-color:white">
+              <h4>Comments</h4>
+              {% for key, value in comments.items %}
+                  {% if key == post %}
+                      {% for item in value %}
+                        <hr/>
+                          <h5>{{ item.author.username }} -> {{ item.content }}
+                            <span style="text-align:right; float:right">
+                              {% if item.isReported == False %}
+                                <a href="/report_comment?comment_id={{ item.id }}">Report comment</a>
+                              {% else %}
+                                Reported.
+                              {% endif %}
+                            </span>
+                          </h5>
+                      {% endfor %}
+                  {% endif %}
+              {% endfor %}
+            </div>
         </div>
     {% endfor %}
 {% endif %}

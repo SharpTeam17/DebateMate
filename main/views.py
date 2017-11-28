@@ -14,8 +14,10 @@ def make_context(current_user):
     name = current_user.username
     current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
+    debate_feed = Argument.objects.filter(isActive = True)
     debate_feed = debate_feed.order_by('-initial_post_date')
     comment_set = Comment.objects.filter(parent_debate=current_debate)
+    comment_set = Comment.objects.filter(isActive = True)
     comments = {}
     for item in debate_feed:
         comments[item] = comment_set.filter(parent_post=item)
@@ -126,8 +128,10 @@ def spectate(request):
     name = request.user.username
     current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
+    debate_feed = Argument.objects.filter(isActive = True)
     debate_feed = debate_feed.order_by('-initial_post_date')
     comment_set = Comment.objects.filter(parent_debate=current_debate)
+    comment_set = Comment.objects.filter(isActive = True)
     comments = {}
     for item in debate_feed:
         comments[item] = comment_set.filter(parent_post=item)
@@ -175,9 +179,9 @@ def report_comment(request):
             reportedComment.save()
             return redirect('spectate')
     else:
-        #using post_id here since the report form can be used for arguments and comments
+        #using post_id for name instead of comment_id here since the report form can be used for arguments and comments
         post_id = request.GET.get('comment_id')
-        reportedArgument = Argument.objects.get(id = post_id)
+        reportedComment = Comment.objects.get(id = post_id)
         form = ReportForm(initial = {'post_id': post_id})
         context = {
             'reportedComment': reportedComment,
@@ -185,6 +189,35 @@ def report_comment(request):
             }
     return render(request, 'main/report_comment.html', context)
 
+def clear_comment_report(request):
+    comment_id = request.GET.get('comment_id')
+    reportedComment = Comment.objects.get(id = comment_id)
+    reportedComment.isReported = False
+    reportedComment.reasonForBeingReported = ''
+    reportedComment.save()
+    return redirect('view_reported_comments')
+
+def clear_argument_report(request):
+    argument_id = request.GET.get('argument_id')
+    reportedArgument = Argument.objects.get(id = argument_id)
+    reportedArgument.isReported = False
+    reportedArgument.reasonForBeingReported = ''
+    reportedArgument.save()
+    return redirect('view_reported_arguments')
+
+def delete_comment(request):
+    comment_id = request.GET.get('comment_id')
+    reportedComment = Comment.objects.get(id = comment_id)
+    reportedComment.isActive = False
+    reportedComment.save()
+    return redirect('view_reported_comments')
+
+def delete_argument(request):
+    argument_id = request.GET.get('argument_id')
+    reportedArgument = Argument.objects.get(id = argument_id)
+    reportedArgument.isActive = False
+    reportedArgument.save()
+    return redirect('view_reported_arguments')
 
 def rules(request):
     context = {
@@ -265,7 +298,7 @@ def confirm_comment(request):
         if form.is_valid():
             current_user = request.user
             profile = UserInfo.objects.get(user = current_user)
-            
+
             temp_content = form.cleaned_data['content']
             post_id = form.cleaned_data['post_id']
             temp_source = form.cleaned_data['source']
@@ -273,7 +306,7 @@ def confirm_comment(request):
             temp_side = profile.current_side
             temp_parent_post = Argument.objects.get(id = post_id)
             current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
-            
+
             new_comment = Comment(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate, parent_post = temp_parent_post)
             new_comment.save()
             return redirect('debate')

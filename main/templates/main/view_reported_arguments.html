@@ -9,7 +9,12 @@
           {% if reported_arguments_feed %}
             {% for post in reported_arguments_feed %}
               <h2>Reason given: {{post.reasonForBeingReported}} </h2>
-              <div class="jumbotron" style="background-color:red">
+              {% if post.isActive %}
+                Argument is active. Deactivate <a href="/delete_argument?argument_id={{ post.id }}">here.</a> Clear report <a href="/clear_argument_report?argument_id={{ post.id }}">here.</a>
+              {% else %}
+                Argument has been deactivated.
+              {% endif %}
+              <div class="jumbotron" style="background-color:silver">
                 <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
                 <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
                 <p>{{ post.content }}</p>

@@ -25,6 +25,7 @@ class DailyDebate(models.Model):
 class Argument(models.Model):
 	SIDE_CHOICES = (('A', 'A'), ('B', 'B'))
 
+	isActive = models.BooleanField(default = True)
 	isReported = models.BooleanField(default = False)
 	reasonForBeingReported = models.TextField()
 	reportedDate = models.DateTimeField(auto_now = True)
@@ -41,6 +42,7 @@ class Argument(models.Model):
 class Comment(models.Model):
 	SIDE_CHOICES = (('A', 'A'), ('B', 'B'))
 
+	isActive = models.BooleanField(default = True)
 	isReported = models.BooleanField(default = False)
 	reasonForBeingReported = models.TextField()
 	reportedDate = models.DateTimeField(auto_now = True)

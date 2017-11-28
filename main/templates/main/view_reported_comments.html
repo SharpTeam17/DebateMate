@@ -9,7 +9,12 @@
           {% if reported_comments_feed %}
             {% for comment in reported_comments_feed %}
               <h2>Reason given: {{comment.reasonForBeingReported}} </h2>
-              <div class="jumbotron" style="background-color:red">
+              {% if comment.isActive %}
+                Comment is active. Deactivate <a href="/delete_comment?comment_id={{ comment.id }}">here.</a> Clear report <a href="/clear_comment_report?comment_id={{ comment.id }}">here.</a>
+              {% else %}
+                Comment has been deactivated.
+              {% endif %}
+              <div class="jumbotron" style="background-color:silver">
                 <h2 style="text-align:center"><b>Comment</b></h2>
                 <h3 style="text-align:center"><b>Written by {{ comment.author }} on {{ comment.initial_post_date }}</b></h3>
                 <p>{{ comment.content }}</p>
@@ -17,8 +22,8 @@
               <br/>
             {% endfor %}
           {% else %}
-            <h3>There are no reported arguments currently.</h3>
-            <!-- {% crispy form %} -->
+            <h3>There are no reported comments currently.</h3>
+
           {% endif %}
         {% else %}
           <h3>You must be logged in as a moderator to use this page.</h3>
