@@ -109,20 +109,30 @@ def moderate(request):
     return render(request, 'main/moderate.html')
 
 def view_reported_arguments(request):
-    reported_arguments_feed = Argument.objects.filter(isReported = True)
-    reported_arguments_feed = reported_arguments_feed.order_by('-reportedDate')
-    context = {
-        'reported_arguments_feed': reported_arguments_feed
-    }
-    return render(request, 'main/view_reported_arguments.html', context)
+    current_user = request.user
+    if current_user.is_staff:
+        reported_arguments_feed = Argument.objects.filter(isReported = True)
+        reported_arguments_feed = reported_arguments_feed.order_by('-reportedDate')
+        context = {
+            'reported_arguments_feed': reported_arguments_feed
+        }
+        return render(request, 'main/view_reported_arguments.html', context)
+    else:
+        return render(request, 'main/staff_only.html')
+
 
 def view_reported_comments(request):
-    reported_comments_feed = Comment.objects.filter(isReported = True)
-    reported_comments_feed = reported_comments_feed.order_by('-reportedDate')
-    context = {
-        'reported_comments_feed': reported_comments_feed
-    }
-    return render(request, 'main/view_reported_comments.html', context)
+    current_user = request.user
+    if current_user.is_staff:
+        reported_comments_feed = Comment.objects.filter(isReported = True)
+        reported_comments_feed = reported_comments_feed.order_by('-reportedDate')
+        context = {
+            'reported_comments_feed': reported_comments_feed
+        }
+        return render(request, 'main/view_reported_comments.html', context)
+    else:
+        return render(request, 'main/staff_only.html')
+
 
 def spectate(request):
     name = request.user.username
@@ -190,34 +200,52 @@ def report_comment(request):
     return render(request, 'main/report_comment.html', context)
 
 def clear_comment_report(request):
-    comment_id = request.GET.get('comment_id')
-    reportedComment = Comment.objects.get(id = comment_id)
-    reportedComment.isReported = False
-    reportedComment.reasonForBeingReported = ''
-    reportedComment.save()
-    return redirect('view_reported_comments')
+    current_user = request.user
+    if current_user.is_staff:
+        comment_id = request.GET.get('comment_id')
+        reportedComment = Comment.objects.get(id = comment_id)
+        reportedComment.isReported = False
+        reportedComment.reasonForBeingReported = ''
+        reportedComment.save()
+        return redirect('view_reported_comments')
+    else:
+        return render(request, 'main/staff_only.html')
+
 
 def clear_argument_report(request):
-    argument_id = request.GET.get('argument_id')
-    reportedArgument = Argument.objects.get(id = argument_id)
-    reportedArgument.isReported = False
-    reportedArgument.reasonForBeingReported = ''
-    reportedArgument.save()
-    return redirect('view_reported_arguments')
+    current_user = request.user
+    if current_user.is_staff:
+        argument_id = request.GET.get('argument_id')
+        reportedArgument = Argument.objects.get(id = argument_id)
+        reportedArgument.isReported = False
+        reportedArgument.reasonForBeingReported = ''
+        reportedArgument.save()
+        return redirect('view_reported_arguments')
+    else:
+        return render(request, 'main/staff_only.html')
+
 
 def delete_comment(request):
-    comment_id = request.GET.get('comment_id')
-    reportedComment = Comment.objects.get(id = comment_id)
-    reportedComment.isActive = False
-    reportedComment.save()
-    return redirect('view_reported_comments')
+    current_user = request.user
+    if current_user.is_staff:
+        comment_id = request.GET.get('comment_id')
+        reportedComment = Comment.objects.get(id = comment_id)
+        reportedComment.isActive = False
+        reportedComment.save()
+        return redirect('view_reported_comments')
+    else:
+        return render(request, 'main/staff_only.html')
 
 def delete_argument(request):
-    argument_id = request.GET.get('argument_id')
-    reportedArgument = Argument.objects.get(id = argument_id)
-    reportedArgument.isActive = False
-    reportedArgument.save()
-    return redirect('view_reported_arguments')
+    current_user = request.user
+    if current_user.is_staff:
+        argument_id = request.GET.get('argument_id')
+        reportedArgument = Argument.objects.get(id = argument_id)
+        reportedArgument.isActive = False
+        reportedArgument.save()
+        return redirect('view_reported_arguments')
+    else:
+        return render(request, 'main/staff_only.html')
 
 def rules(request):
     context = {
