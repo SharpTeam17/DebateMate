@@ -21,6 +21,18 @@
             {% else %}
             <p>Reported.</p>
             {% endif %}
+        <!-- COMMENTS -->
+        <div class="card w-50" style="margin:auto">
+        <div class="card-body" style="color: black; ">
+        <h6 class="card-title">Comments</h6>
+        {% for key, value in comments.items %}
+            {% if key == post %}
+                {% for item in value %}
+                    <h4>{{ item.author.username }} {{ item.content }}</h4>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </div>
         </div>
     {% endfor %}
 {% endif %}
