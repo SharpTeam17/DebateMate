@@ -49,6 +49,9 @@
           </div>
         </div>
     {% endfor %}
+{% else %}
+    <p style="text-align:center">No posts yet, would you like to start off the discussion?</p>
+    {% crispy post_form %}
 {% endif %}
 </div>
 {% endblock%}

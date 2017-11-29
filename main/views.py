@@ -14,10 +14,10 @@ def make_context(current_user):
     name = current_user.username
     current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
-    debate_feed = Argument.objects.filter(isActive = True)
+    debate_feed = debate_feed.filter(isActive = True)
     debate_feed = debate_feed.order_by('-initial_post_date')
     comment_set = Comment.objects.filter(parent_debate=current_debate)
-    comment_set = Comment.objects.filter(isActive = True)
+    comment_set = comment_set.filter(isActive = True)
     comments = {}
     for item in debate_feed:
         comments[item] = comment_set.filter(parent_post=item)
@@ -76,7 +76,7 @@ def debate(request):
                 #temp_parent =
                 temp_author = current_user
                 temp_side = profile.current_side
-                current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
+                current_debate = DailyDebate.objects.get(is_current_debate = True)
                 new_post = Argument(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate)
                 new_post.save()
 
@@ -91,7 +91,7 @@ def debate(request):
                 temp_source = form.cleaned_data['source']
                 temp_author = current_user
                 temp_side = profile.current_side
-                current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
+                current_debate = DailyDebate.objects.get(is_current_debate = True)
                 new_post = Argument(author = temp_author, side = temp_side, content = temp_content, source = temp_source, parent_debate = current_debate)
                 new_post.save()
 
