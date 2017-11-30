@@ -136,12 +136,12 @@ def view_reported_comments(request):
 
 def spectate(request):
     name = request.user.username
-    current_debate = DailyDebate.objects.filter(is_current_debate = True)[0] #fetches debate marked current
+    current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
-    debate_feed = Argument.objects.filter(isActive = True)
+    debate_feed = debate_feed.filter(isActive = True)
     debate_feed = debate_feed.order_by('-initial_post_date')
     comment_set = Comment.objects.filter(parent_debate=current_debate)
-    comment_set = Comment.objects.filter(isActive = True)
+    comment_set = comment_set.filter(isActive = True)
     comments = {}
     for item in debate_feed:
         comments[item] = comment_set.filter(parent_post=item)
