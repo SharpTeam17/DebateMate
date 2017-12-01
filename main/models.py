@@ -56,3 +56,15 @@ class Comment(models.Model):
 	last_edited_date = models.DateTimeField(auto_now = True)
 	content = models.TextField()
 	source = models.URLField()
+
+    
+class Rubric(models.Model):
+    post = models.ForeignKey(Argument)
+    
+    understand_topic = models.IntegerField()
+    respectful = models.IntegerField()
+    logical = models.IntegerField()
+    accurate_info = models.IntegerField()
+    convincing = models.IntegerField()
+    
+    grader = models.ForeignKey(User)
