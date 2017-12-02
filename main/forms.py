@@ -74,3 +74,66 @@ class MakeCommentForm(forms.Form):
     helper.form_method = 'POST'
     helper.add_input(Submit('comment_submit', 'Submit', css_class = "btn-primary"))
     helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
+
+class ScoreArgumentForm(forms.Form):
+    post_id = forms.IntegerField(widget=forms.HiddenInput())
+    
+    understands_topic = forms.ChoiceField(
+        choices={
+            (1, '1: Strongly disagree'),
+            (2, '2: Disagree'),
+            (3, '3: Neutral'),
+            (4, '4: Agree'),
+            (5, '5: Strongly agree'),
+        },
+    initial=3, widget=forms.RadioSelect, label='The debater clearly understands the debate topic and argued their viewpoint effectively. ',
+    )
+    
+    respectful = forms.ChoiceField(
+        choices={
+            (1, '1: Strongly disagree'),
+            (2, '2: Disagree'),
+            (3, '3: Neutral'),
+            (4, '4: Agree'),
+            (5, '5: Strongly agree'),
+        },
+    initial=3, widget=forms.RadioSelect, label='The debater was respectful and did not engage in any inappropriate language or behavior. ',
+    )
+    
+    logical = forms.ChoiceField(
+        choices={
+            (1, '1: Strongly disagree'),
+            (2, '2: Disagree'),
+            (3, '3: Neutral'),
+            (4, '4: Agree'),
+            (5, '5: Strongly agree'),
+        },
+    initial=3, widget=forms.RadioSelect, label='The debater tied their argument to a central idea and organized their argument in a logical fashion. ',
+    )
+    
+    accurate_info = forms.ChoiceField(
+        choices={
+            (1, '1: Strongly disagree'),
+            (2, '2: Disagree'),
+            (3, '3: Neutral'),
+            (4, '4: Agree'),
+            (5, '5: Strongly agree'),
+        },
+    initial=3, widget=forms.RadioSelect, label='The debater used accurate information to argue their viewpoint. ',
+    )
+    
+    convincing = forms.ChoiceField(
+        choices={
+            (1, '1: Strongly disagree'),
+            (2, '2: Disagree'),
+            (3, '3: Neutral'),
+            (4, '4: Agree'),
+            (5, '5: Strongly agree'),
+        },
+    initial=3, widget=forms.RadioSelect, label='This debater convinced me of their viewpoint. ',
+    )
+    
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.add_input(Submit('rubric_submit', 'Submit', css_class = "btn-primary"))
+    helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))

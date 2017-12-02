@@ -15,7 +15,10 @@
             <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
             <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
             <p>{{ post.content }}</p>
-            <p><a href="{{ post.source }}">Source</a>
+            <p><a href="{{ post.source }}">Source</a><br>
+            {% if post.id not in scored_arguments %}
+                <a href="/score_post?post_id={{ post.id }}">Score argument</a></p>
+            {% endif %}
               <span style="text-align:right; float:right">
                 {% if post.isReported == False %}
                   <a href="/report_argument?post_id={{ post.id }}">Report argument</a></p>

@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^spectate/$', views.spectate, name='spectate'),
     url(r'^moderate/$', views.moderate, name='moderate'),
     url(r'^confirm_comment/$', views.confirm_comment, name='confirm_comment'),
+    url(r'^score_post/$', views.score_post, name='score_post'),
 ]

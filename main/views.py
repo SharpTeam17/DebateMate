@@ -5,10 +5,10 @@ from django.template import loader
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from main.models import UserInfo, DailyDebate, Argument, Comment
+from main.models import UserInfo, DailyDebate, Argument, Comment, Rubric
 from datetime import date, datetime
 
-from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm, ReportForm
+from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm, ReportForm, ScoreArgumentForm
 
 def make_context(current_user):
     name = current_user.username
@@ -135,23 +135,13 @@ def view_reported_comments(request):
 
 
 def spectate(request):
-    name = request.user.username
-    current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
-    debate_feed = Argument.objects.filter(parent_debate = current_debate)
-    debate_feed = debate_feed.filter(isActive = True)
-    debate_feed = debate_feed.order_by('-initial_post_date')
-    comment_set = Comment.objects.filter(parent_debate=current_debate)
-    comment_set = comment_set.filter(isActive = True)
-    comments = {}
-    for item in debate_feed:
-        comments[item] = comment_set.filter(parent_post=item)
-    topic = current_debate.topic
-    context = {
-        'debate_feed': debate_feed,
-        'comments': comments,
-        'name': name,
-        'topic': topic,
-        }
+    current_user = request.user
+    scored_arguments_temp = Rubric.objects.filter(grader = current_user)
+    scored_arguments = []
+    for item in scored_arguments_temp:
+        scored_arguments.append(item.post_id)
+    context = make_context(current_user)
+    context['scored_arguments'] = scored_arguments
     return render(request, 'main/spectate.html', context)
 
 def report_argument(request):
@@ -348,3 +338,31 @@ def confirm_comment(request):
             'form': form
             }
     return render(request, 'main/confirm_comment.html', context)
+
+def score_post(request):
+    if request.method == 'POST':
+        form = ScoreArgumentForm(request.POST)
+        if form.is_valid():
+            current_user = request.user
+            post_id = form.cleaned_data['post_id']
+            
+            post_temp = Argument.objects.get(id = post_id)
+            understands_topic_temp = form.cleaned_data['understands_topic']
+            respectful_temp = form.cleaned_data['respectful']
+            logical_temp = form.cleaned_data['logical']
+            accurate_info_temp = form.cleaned_data['accurate_info']
+            convincing_temp = form.cleaned_data['convincing']
+            
+            new_score = Rubric(post = post_temp, grader = current_user, understand_topic = understands_topic_temp, respectful = respectful_temp, logical = logical_temp, accurate_info = accurate_info_temp, convincing = convincing_temp)
+            new_score.save()
+            redirect('spectate')
+        return redirect('spectate')
+    else:
+        post_id = request.GET.get('post_id')
+        selected_argument = Argument.objects.get(id = post_id)
+        form = ScoreArgumentForm(initial = {'post_id': post_id})
+        context = {
+            'selected_argument': selected_argument,
+            'form': form
+            }
+        return render(request, 'main/score_argument.html', context)
