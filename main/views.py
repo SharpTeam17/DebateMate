@@ -408,7 +408,7 @@ def score_post(request):
             logical_temp = form.cleaned_data['logical']
             accurate_info_temp = form.cleaned_data['accurate_info']
             convincing_temp = form.cleaned_data['convincing']
-            total_temp = understands_topic_temp + respectful_temp + logical_temp + accurate_info_temp + convincing_temp
+            total_temp = int(understands_topic_temp) + int(respectful_temp) + int(logical_temp) + int(accurate_info_temp) + int(convincing_temp)
             
             new_score = Rubric(total = total_temp, post = post_temp, grader = current_user, understand_topic = understands_topic_temp, respectful = respectful_temp, logical = logical_temp, accurate_info = accurate_info_temp, convincing = convincing_temp)
             new_score.save()
