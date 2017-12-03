@@ -8,13 +8,13 @@
 
 Current scores: <br><br>
 {% if a_scores == 0 %}
-    Side A: No scoresheets have been submitted for this side. Help out by scoring an argument!
+    Side A: No scoresheets have been submitted for this side.
 {% else %}
     Side A: {{a_average}}, average of {{a_scores}} ratings.<br>
 {% endif %}
 <br>
 {% if b_scores == 0 %}
-    Side B: No scoresheets have been submitted for this side. Help out by scoring an argument!
+    Side B: No scoresheets have been submitted for this side.
 {% else %}
     Side B: {{b_average}}, average of {{b_scores}} ratings.<br>
 {% endif %}
@@ -33,7 +33,7 @@ Current scores: <br><br>
             {% if post.id in scores %}
                 This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).
             {% else %}
-                This post has not been scored yet. Click "Score Argument" to score it.
+                This post has not been scored yet. 
             {% endif %}
             </h3>
           <p>{{ post.content }}</p>
