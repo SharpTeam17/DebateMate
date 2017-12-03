@@ -9,8 +9,15 @@ from main.models import UserInfo, DailyDebate, Argument, Comment, Rubric
 from datetime import date, datetime
 
 from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm, ReportForm, ScoreArgumentForm
+from django.template.defaulttags import register
+
+@register.filter #allows looking up a value to a dictionary within a template when the value is part of a loop
+def get_item(dictionary, key):
+    return dictionary.get(key)
+#usage: {{ dicotionary_name|get_item:value }}
 
 def make_context(current_user):
+    #fetches necessary items to render a debate page
     name = current_user.username
     current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
@@ -18,12 +25,55 @@ def make_context(current_user):
     debate_feed = debate_feed.order_by('-initial_post_date')
     comment_set = Comment.objects.filter(parent_debate=current_debate)
     comment_set = comment_set.filter(isActive = True)
-    comments = {}
+    
+    comments = {} #dict where key = parent argument and value = list of child comments
+    scores = {} #dict where key = argument id and value = average of scores it has received
+    counters = {} #dict where key = argument id and value = number of times it has been scored
+    a_total = 0 # raw points total for side a
+    a_scores = 0 # numver of times any argument from side a has been scored
+    b_total = 0
+    b_scores = 0
+    
     for item in debate_feed:
+        #create comments[] entry for each post
         comments[item] = comment_set.filter(parent_post=item)
+        
+        #create scores[] and counters[] entry for each post when applicable
+        side = item.side
+        temp_scores = Rubric.objects.filter(post = item)
+        count = 0
+        point_total = 0
+        if temp_scores:
+            for score in temp_scores:
+                point_total += score.total
+                count += 1
+                if side == 'A':
+                    a_total += score.total
+                    a_scores += 1
+                elif side == 'B':
+                    b_total += score.total
+                    b_scores += 1
+            try:
+                scores[item.id] = point_total / count
+                counters[item.id] = count
+            except ZeroDivisionError:
+                pass
+    
+    #to avoid dividing by zero, the average score is set to 0 if a side has not received any scores. The template displays a custom message in this case.
+    if a_scores == 0:
+        a_average = 0
+    else:
+        a_average = a_total / a_scores
+        
+    if b_scores == 0:
+        b_average = 0
+    else:
+        b_average = b_total / b_scores
+        
     topic = current_debate.topic
     post_form = MakePostForm()
     comment_form = MakeCommentForm()
+    
     context = {
         'debate_feed': debate_feed,
         'comments': comments,
@@ -31,6 +81,12 @@ def make_context(current_user):
         'topic': topic,
         'post_form': post_form,
         'comment_form': comment_form,
+        'scores': scores,
+        'a_average': a_average,
+        'a_scores': a_scores,
+        'b_average': b_average,
+        'b_scores': b_scores,
+        'counters': counters,
         }
     return context
 
@@ -352,8 +408,9 @@ def score_post(request):
             logical_temp = form.cleaned_data['logical']
             accurate_info_temp = form.cleaned_data['accurate_info']
             convincing_temp = form.cleaned_data['convincing']
+            total_temp = understands_topic_temp + respectful_temp + logical_temp + accurate_info_temp + convincing_temp
             
-            new_score = Rubric(post = post_temp, grader = current_user, understand_topic = understands_topic_temp, respectful = respectful_temp, logical = logical_temp, accurate_info = accurate_info_temp, convincing = convincing_temp)
+            new_score = Rubric(total = total_temp, post = post_temp, grader = current_user, understand_topic = understands_topic_temp, respectful = respectful_temp, logical = logical_temp, accurate_info = accurate_info_temp, convincing = convincing_temp)
             new_score.save()
             redirect('spectate')
         return redirect('spectate')

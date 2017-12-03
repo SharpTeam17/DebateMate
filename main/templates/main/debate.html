@@ -5,6 +5,20 @@
 <div class="container">
 <h3 style="text-align:center">Welcome to the Daily Debate, {{ name }}!</h3>
 <h1 style="text-align:center">{{ topic }}</h1><br/>
+
+Current scores: <br><br>
+{% if a_scores == 0 %}
+    Side A: No scoresheets have been submitted for this side. Help out by scoring an argument!
+{% else %}
+    Side A: {{a_average}}, average of {{a_scores}} ratings.<br>
+{% endif %}
+<br>
+{% if b_scores == 0 %}
+    Side B: No scoresheets have been submitted for this side. Help out by scoring an argument!
+{% else %}
+    Side B: {{b_average}}, average of {{b_scores}} ratings.<br>
+{% endif %}
+
 {% if debate_feed %}
     {% crispy post_form %}
     {% for post in debate_feed %}
@@ -15,6 +29,13 @@
         {% endif %}
           <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
           <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
+          <h3 style="text-align:center">
+            {% if post.id in scores %}
+                This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).
+            {% else %}
+                This post has not been scored yet. Click "Score Argument" to score it.
+            {% endif %}
+            </h3>
           <p>{{ post.content }}</p>
           <p><a href="{{ post.source }}">Source</a>
             <span style="text-align:right; float:right">

@@ -66,5 +66,6 @@ class Rubric(models.Model):
     logical = models.IntegerField()
     accurate_info = models.IntegerField()
     convincing = models.IntegerField()
+    total = models.IntegerField()
     
     grader = models.ForeignKey(User)
