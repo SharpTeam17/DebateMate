@@ -8,7 +8,7 @@
         {% if user.is_authenticated %}
           {% if reportedArgument %}
             <h2>Argument in question: </h2>
-            <div class="jumbotron" style="background-color:red">
+            <div class="jumbotron" style="background-color:silver">
                 <h2 style="text-align:center"><b>Side {{ reportedArgument.side }}</b></h2>
                 <h3 style="text-align:center"><b>Posted by {{ reportedArgument.author }} on {{ reportedArgument.initial_post_date }}</b></h3>
                 <p>{{ reportedArgument.content }}</p>

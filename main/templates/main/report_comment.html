@@ -8,7 +8,7 @@
         {% if user.is_authenticated %}
           {% if reportedComment %}
             <h2>Comment in question: </h2>
-            <div class="jumbotron" style="background-color:red">
+            <div class="jumbotron" style="background-color:silver">
                 <h3 style="text-align:center"><b>Posted by {{ reportedComment.author }} on {{ reportedComment.initial_post_date }}</b></h3>
                 <p>{{ reportedComment.content }}</p>
                 <p><a href="{{ reportedComment.source }}">Source</a></p>

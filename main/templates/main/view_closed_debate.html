@@ -1,0 +1,65 @@
+{% extends 'main/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content%}
+<div class="container">
+<h3 style="text-align:center">Welcome to the Daily Debate, {{ name }}!</h3>
+<h1 style="text-align:center">{{ topic }}</h1><br/>
+Current scores: <br><br>
+{% if a_scores == 0 %}
+    Side A: No scoresheets have been submitted for this side.
+{% else %}
+    Side A: {{a_average}}, average of {{a_scores}} ratings.<br>
+{% endif %}
+<br>
+{% if b_scores == 0 %}
+    Side B: No scoresheets have been submitted for this side.
+{% else %}
+    Side B: {{b_average}}, average of {{b_scores}} ratings.<br>
+{% endif %}
+
+{% if debate_feed %}
+    {% for post in debate_feed %}
+        {% if post.side == 'A' %}
+        <div class="jumbotron" style="background-color:pink">
+        {% elif post.side == 'B' %}
+        <div class="jumbotron" style="background-color:lightblue">
+        {% endif %}
+            <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
+            <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
+            <h3 style="text-align:center">
+                {% if post.id in scores %}
+                    This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).
+                {% else %}
+                    This post was not scored.
+                {% endif %}
+                </h3>
+            <br>
+            <p>{{ post.content }}</p>
+            <p><a href="{{ post.source }}">Source</a></p>
+              <!-- <span style="text-align:left; float:left">
+                {% if post.id not in scored_arguments %}
+                   <p> <a href="/score_post?post_id={{ post.id }}">Score argument</a></p>
+                {% else %}
+                    <p>You have scored this argument.</p>
+                {% endif %}
+              </span> -->
+            <br><br>
+            <!-- COMMENTS -->
+            <div class="jumbotron" style="background-color:white">
+              <h4>Comments</h4>
+              {% for key, value in comments.items %}
+                  {% if key == post %}
+                      {% for item in value %}
+                        <hr/>
+                          <h5>{{ item.author.username }} -> {{ item.content }}
+                          </h5>
+                      {% endfor %}
+                  {% endif %}
+              {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock%}
