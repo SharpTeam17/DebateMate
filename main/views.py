@@ -74,6 +74,9 @@ def make_context(current_user, debate_id):
     post_form = MakePostForm()
     comment_form = MakeCommentForm()
 
+    a_bar = a_average * 4
+    b_bar = b_average * 4
+
     context = {
         'debate_feed': debate_feed,
         'comments': comments,
@@ -87,6 +90,8 @@ def make_context(current_user, debate_id):
         'b_average': b_average,
         'b_scores': b_scores,
         'counters': counters,
+        'a_bar': a_bar,
+        'b_bar': b_bar,
         }
     return context
 

@@ -10,12 +10,25 @@ Current scores: <br><br>
     Side A: No scoresheets have been submitted for this side. Help out by scoring an argument!
 {% else %}
     Side A: {{a_average}}, average of {{a_scores}} ratings.<br>
+    <div class="progress">
+        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
+        aria-valuenow="{{a_bar}}" aria-valuemin="0" aria-valuemax="100" style="width:{{a_bar}}%">
+        Side A Score
+        </div>
+    </div>
+
 {% endif %}
 <br>
 {% if b_scores == 0 %}
     Side B: No scoresheets have been submitted for this side. Help out by scoring an argument!
 {% else %}
     Side B: {{b_average}}, average of {{b_scores}} ratings.<br>
+    <div class="progress">
+        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+        aria-valuenow="{{b_bar}}" aria-valuemin="0" aria-valuemax="100" style="width:{{b_bar}}%">
+        Side B Score
+        </div>
+    </div>
 {% endif %}
 
 {% if debate_feed %}
