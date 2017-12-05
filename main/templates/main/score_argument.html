@@ -9,7 +9,11 @@
           {% if selected_argument %}
             <h2>Argument in question: </h2>
             <br>
-            <div class="jumbotron" style="background-color:gray">
+            {% if selected_argument.side == 'A' %}
+            <div class="jumbotron" style="background-color:pink">
+            {% elif selected_argument.side == 'B' %}
+            <div class="jumbotron" style="background-color:lightblue">
+            {% endif %}
                 <h2 style="text-align:center"><b>Side {{ selected_argument.side }}</b></h2>
                 <h3 style="text-align:center"><b>Posted by {{ selected_argument.author }} on {{ selected_argument.initial_post_date }}</b></h3>
                 <p>{{ selected_argument.content }}</p>
