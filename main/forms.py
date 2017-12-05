@@ -5,6 +5,40 @@ from crispy_forms.layout import Layout, Submit, Field
 class JoinForm(forms.Form):
     SPECTATOR = 'S'
     DEBATOR = 'D'
+
+    role = forms.ChoiceField(
+        choices = (
+            (SPECTATOR, 'Spectator'),
+            (DEBATOR, 'Debater'),
+        ),
+        widget = forms.RadioSelect,
+        label = 'Select a Role',
+        initial = 'S',
+    )
+    side = forms.ChoiceField(
+        choices = (
+            ('A', 'A'),
+            ('B', 'B'),
+        ),
+        widget = forms.RadioSelect,
+        label ='Select a Side',
+        required = False,
+    )
+
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.add_input(Submit('join', 'Join', css_class="btn-primary"))
+    helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
+
+    def __init__(self, data=None, *args, **kwargs):
+        super(JoinForm, self).__init__(data, *args, **kwargs)
+
+        if data and data.get('role') == self.DEBATOR:
+            self.fields['side'].required = True
+
+class JoinFormMod(forms.Form):
+    SPECTATOR = 'S'
+    DEBATOR = 'D'
     MODERATOR = 'M'
 
     role = forms.ChoiceField(
@@ -21,11 +55,10 @@ class JoinForm(forms.Form):
         choices = (
             ('A', 'A'),
             ('B', 'B'),
-            ('Spectator', 'S')
         ),
         widget = forms.RadioSelect,
-        label ='Select a side',
-        initial = 'S',
+        label ='Select a Side',
+        required = False,
     )
 
     helper = FormHelper()
@@ -34,7 +67,7 @@ class JoinForm(forms.Form):
     helper.add_input(Submit('cancel', 'Cancel', css_class="btn-secondary"))
 
     def __init__(self, data=None, *args, **kwargs):
-        super(JoinForm, self).__init__(data, *args, **kwargs)
+        super(JoinFormMod, self).__init__(data, *args, **kwargs)
 
         if data and data.get('role') == self.DEBATOR:
             self.fields['side'].required = True

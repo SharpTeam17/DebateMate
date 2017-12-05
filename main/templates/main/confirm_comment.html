@@ -3,25 +3,24 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-5 col-md-offset-5">
-        {% if user.is_authenticated %}
-          {% if parent_post %}
-            <h2>Argument: </h2>
-            <div class="jumbotron" style="background-color:red">
+    {% if user.is_authenticated %}
+        {% if parent_post %}
+        <h2 style="text-align:center">Reply to Argument</h2>
+            {% if parent_post.side == 'A' %}
+            <div class="jumbotron" style="background-color:pink">
+            {% elif parent_post.side == 'B' %}
+            <div class="jumbotron" style="background-color:lightblue">
+            {% endif %}
                 <h2 style="text-align:center"><b>Side {{ parent_post.side }}</b></h2>
-                <h3 style="text-align:center"><b>Posted by {{ parent_post.author }} on {{ reportedArgument.initial_post_date }}</b></h3>
+                <h3 style="text-align:center"><b>Posted by {{ parent_post.author }} on {{ parent_post.initial_post_date }}</b></h3>
                 <p>{{ parent_post.content }}</p>
                 <p><a href="{{ parent_post.source }}">Source</a></p>
             </div>
-
             <h3>Enter your comment here: </h3>
             {% crispy form %}
           {% endif %}
         {% else %}
-            <p style="text-align:center">You need to be logged in to add a comment.</p>
-        {% endif %}
-        </div>
-    </div>
+        <p style="text-align:center">You need to be logged in to add a comment.</p>
+    {% endif %}
 </div>
 {% endblock %}

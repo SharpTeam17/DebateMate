@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-5 col-md-offset-5">
+    <br>
+    <a href="/moderate">Return to moderator tools</a>
         {% if user.is_authenticated %}
           {% if reported_comments_feed %}
             {% for comment in reported_comments_feed %}
@@ -14,12 +14,15 @@
               {% else %}
                 Comment has been deactivated.
               {% endif %}
-              <div class="jumbotron" style="background-color:silver">
+              {% if comment.side == 'A' %}
+              <div class="jumbotron" style="background-color:pink">
+              {% elif comment.side == 'B' %}
+              <div class="jumbotron" style="background-color:lightblue">
+              {% endif %}
                 <h2 style="text-align:center"><b>Comment</b></h2>
                 <h3 style="text-align:center"><b>Written by {{ comment.author }} on {{ comment.initial_post_date }}</b></h3>
                 <p>{{ comment.content }}</p>
               </div>
-              <br/>
             {% endfor %}
           {% else %}
             <h3>There are no reported comments currently.</h3>
@@ -28,7 +31,5 @@
         {% else %}
           <h3>You must be logged in as a moderator to use this page.</h3>
         {% endif %}
-        </div>
-    </div>
 </div>
 {% endblock %}
