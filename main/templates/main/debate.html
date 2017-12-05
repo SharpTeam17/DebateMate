@@ -36,9 +36,9 @@
 {% if debate_feed %}
     {% for post in debate_feed %}
         {% if post.side == 'A' %}
-        <div class="jumbotron" style="background-color:pink">
+        <div class="jumbotron pull-left" style="background-color:pink">
         {% elif post.side == 'B' %}
-        <div class="jumbotron" style="background-color:lightblue">
+        <div class="jumbotron pull-right" style="background-color:lightblue">
         {% endif %}
           <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
           <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
@@ -58,7 +58,6 @@
                 Reported.
               {% endif %}
             </span>
-          </p>
           <p><a href="/confirm_comment?post_id={{ post.id }}">Comment on this argument</a></p>
 
           <!-- COMMENTS -->
@@ -74,6 +73,8 @@
                     {% endif %}
                       <h5 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h3>
                       <p>{{ post.content }}</p>
+                        <h5>{{ item.author.username }} -> {{ item.content }}
+
                           <span style="text-align:right; float:right">
                             {% if item.isReported == False %}
                               <a href="/report_comment?comment_id={{ item.id }}">Report comment</a>
