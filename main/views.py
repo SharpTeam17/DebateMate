@@ -19,6 +19,8 @@ def get_item(dictionary, key):
 def make_context(current_user, debate_id):
     #fetches necessary items to render a debate page
     name = current_user.username
+    profile = UserInfo.objects.get(user = current_user)
+    role = profile.current_role
     current_debate = DailyDebate.objects.get(id = debate_id) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
     debate_feed = debate_feed.filter(isActive = True)
@@ -81,6 +83,7 @@ def make_context(current_user, debate_id):
         'debate_feed': debate_feed,
         'comments': comments,
         'name': name,
+        'role': role,
         'topic': topic,
         'post_form': post_form,
         'comment_form': comment_form,

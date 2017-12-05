@@ -55,6 +55,13 @@
             <li>
               <a href="#">{{name}}</a>
             <li>
+            <li>
+              {% if role == 'D' %}
+              <a href="#">Debator</a>
+              {% else %}
+              <a href="#">Spectator</a>
+              {% endif %}
+            <li>
               <a href="/join">
                 <span class="glyphicon glyphicon-info-sign"></span> Join</a>
             </li>

@@ -63,12 +63,17 @@
 
           <!-- COMMENTS -->
           <div class="jumbotron" style="background-color:white">
-            <h4>Comments</h4>
+            <h4><b>Comments</b></h4>
             {% for key, value in comments.items %}
                 {% if key == post %}
                     {% for item in value %}
-                      <hr/>
-                        <h5>{{ item.author.username }} -> {{ item.content }}
+                    {% if item.side == 'A' %}
+                    <div class="jumbotron" style="background-color:pink">
+                    {% elif item.side == 'B' %}
+                    <div class="jumbotron" style="background-color:lightblue">
+                    {% endif %}
+                      <h5 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h3>
+                      <p>{{ post.content }}</p>
                           <span style="text-align:right; float:right">
                             {% if item.isReported == False %}
                               <a href="/report_comment?comment_id={{ item.id }}">Report comment</a>
@@ -77,6 +82,7 @@
                             {% endif %}
                           </span>
                         </h5>
+                    </div>
                     {% endfor %}
                 {% endif %}
             {% endfor %}

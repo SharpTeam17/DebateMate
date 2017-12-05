@@ -14,7 +14,11 @@
               {% else %}
                 Comment has been deactivated.
               {% endif %}
-              <div class="jumbotron" style="background-color:silver">
+              {% if comment.side == 'A' %}
+              <div class="jumbotron" style="background-color:pink">
+              {% elif comment.side == 'B' %}
+              <div class="jumbotron" style="background-color:lightblue">
+              {% endif %}
                 <h2 style="text-align:center"><b>Comment</b></h2>
                 <h3 style="text-align:center"><b>Written by {{ comment.author }} on {{ comment.initial_post_date }}</b></h3>
                 <p>{{ comment.content }}</p>
