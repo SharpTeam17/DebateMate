@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
     <div class="jumbotron">
-        <h1 style="text-align:center">{{ debate.topic }}</h1><br/>
+        <h3 style="text-align:center"><b>{{ debate.topic }}</b></h3><br/>
         {% if user.is_authenticated %}
             {% crispy form %}
         {% else %}
