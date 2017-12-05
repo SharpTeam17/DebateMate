@@ -12,8 +12,8 @@
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
     ['Side', 'Average Vote'],
-    ['A', {{a_average}}],
-    ['B', {{b_average}}],
+    ['A: ' + {{a_scores}} + ' Votes', {{a_average}}],
+    ['B: ' + {{b_scores}} + ' Votes', {{b_average}}],
   ]);
   
     // Optional; add a title and set the width and height of the chart
@@ -30,26 +30,6 @@
 <div class="container">
 <div class="jumbotron">
   <h1 style="text-align:center">{{ topic }}</h1><br/>
-  <!--
-  {% if a_scores == 0 %}
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width:0%;background-color:pink;" aria-valuenow="0">Side A: 0 Points</div>
-    </div>
-  {% else %}
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width:{{a_average}}%;background-color:pink;" aria-valuenow="{{a_average}}">Side A: {{a_average}} Points</div>
-    </div>
-  {% endif %}
-  {% if b_scores == 0 %}
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width:0%;background-color:lightblue;" aria-valuenow="0">Side B: 0 Points</div>
-    </div>
-  {% else %}
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width:{{b_average}}%;background-color:lightblue;" aria-valuenow="{{b_average}}">Side B: {{b_average}} Points</div>
-    </div>
-  {% endif %}
-  -->
   <div id="piechart"></div>
   {% crispy post_form %}
 </div>

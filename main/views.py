@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from main.models import UserInfo, DailyDebate, Argument, Comment, Rubric
 from datetime import date, datetime
 
-from .forms import JoinForm, TopicForm, MakePostForm, MakeCommentForm, ReportForm, ScoreArgumentForm
+from .forms import JoinForm, JoinFormMod, TopicForm, MakePostForm, MakeCommentForm, ReportForm, ScoreArgumentForm
 from django.template.defaulttags import register
 
 @register.filter #allows looking up a value to a dictionary within a template when the value is part of a loop
@@ -227,7 +227,6 @@ def spectate(request):
     scored_arguments = []
     for item in scored_arguments_temp:
         scored_arguments.append(item.post_id)
-
     current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
     context = make_context(current_user, current_debate.id)
     context['scored_arguments'] = scored_arguments
@@ -361,22 +360,34 @@ def signup(request):
 def join(request):
     current_user = request.user
     if request.method == 'POST':
-        form = JoinForm(request.POST)
-        if form.is_valid():
-            # Returns:
-            # S - Spectator
-            # D - Debator
-            # M - Moderator
-            role = form.cleaned_data['role']
-            side = form.cleaned_data['side']
-            profile = UserInfo.objects.get(user = current_user)
-            profile.current_role = role
-            if role == 'D' or role == 'M':
-                profile.current_side = side
-            else:
-                profile.current_side = 'S'
-            profile.save()
-            return redirect('home')
+        if current_user.is_staff:
+            form = JoinFormMod(request.POST)
+            if form.is_valid():
+                role = form.cleaned_data['role']
+                side = form.cleaned_data['side']
+                profile = UserInfo.objects.get(user = current_user)
+                profile.current_role = role
+                if role == 'D' or role == 'M':
+                    profile.current_side = side
+                else:
+                    profile.current_side = 'S'
+                profile.save()
+                return redirect('home')
+        else:
+            form = JoinForm(request.POST)
+            if form.is_valid():
+                role = form.cleaned_data['role']
+                side = form.cleaned_data['side']
+                profile = UserInfo.objects.get(user = current_user)
+                profile.current_role = role
+                if role == 'D':
+                    profile.current_side = side
+                else:
+                    profile.current_side = 'S'
+                profile.save()
+                return redirect('home')
+    if current_user.is_staff:
+        form = JoinFormMod()
     else:
         form = JoinForm()
     current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
