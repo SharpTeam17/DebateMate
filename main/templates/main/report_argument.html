@@ -3,12 +3,14 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-5 col-md-offset-5">
-        {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
           {% if reportedArgument %}
-            <h2>Argument in question: </h2>
-            <div class="jumbotron" style="background-color:red">
+            <h2 style="text-align:center">Argument in Question </h2>
+            {% if reportedArgument.side == 'A' %}
+            <div class="jumbotron" style="background-color:pink">
+            {% elif reportedArgument.side == 'B' %}
+            <div class="jumbotron" style="background-color:lightblue">
+            {% endif %}
                 <h2 style="text-align:center"><b>Side {{ reportedArgument.side }}</b></h2>
                 <h3 style="text-align:center"><b>Posted by {{ reportedArgument.author }} on {{ reportedArgument.initial_post_date }}</b></h3>
                 <p>{{ reportedArgument.content }}</p>
@@ -20,8 +22,6 @@
           {% endif %}
         {% else %}
             <p style="text-align:center">You need to be logged in to report a debater.</p>
-        {% endif %}
-        </div>
-    </div>
+    {% endif %}
 </div>
 {% endblock %}

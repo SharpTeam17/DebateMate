@@ -1,34 +1,29 @@
 {% extends 'main/home.html' %}
-<!-- {% load crispy_forms_tags %} -->
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-5 col-md-offset-5">
-        {% if user.is_authenticated %}
-          {% if reported_arguments_feed %}
-            {% for post in reported_arguments_feed %}
-              <h2>Reason given: {{post.reasonForBeingReported}} </h2>
-              {% if post.isActive %}
-                Argument is active. Deactivate <a href="/delete_argument?argument_id={{ post.id }}">here.</a> Clear report <a href="/clear_argument_report?argument_id={{ post.id }}">here.</a>
-              {% else %}
-                Argument has been deactivated.
-              {% endif %}
-              <div class="jumbotron" style="background-color:silver">
-                <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
-                <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
-                <p>{{ post.content }}</p>
-              </div>
-              <br/>
-            {% endfor %}
-          {% else %}
-            <h3>There are no reported arguments currently.</h3>
-            <!-- {% crispy form %} -->
-          {% endif %}
-        {% else %}
-          <h3>You must be logged in as a moderator to use this page.</h3>
-        {% endif %}
-        </div>
-    </div>
+  {% if user.is_authenticated %}
+  <br>
+  <a href="/moderate">Return to moderator tools</a>
+  {% if reported_arguments_feed %}
+  {% for post in reported_arguments_feed %}
+  <h2>Reason given: {{post.reasonForBeingReported}} </h2>
+  {% if post.isActive %}
+  Argument is active. Deactivate <a href="/delete_argument?argument_id={{ post.id }}">here.</a> Clear report <a href="/clear_argument_report?argument_id={{ post.id }}">here.</a>
+  {% else %}
+  Argument has been deactivated.
+  {% endif %}
+  <div class="jumbotron" style="background-color:silver">
+    <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
+    <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
+    <p>{{ post.content }}</p>
+  </div>
+  {% endfor %}
+  {% else %}
+  <h3>There are no reported arguments currently.</h3>
+  {% endif %}
+  {% else %}
+  <h3>You must be logged in as a moderator to use this page.</h3>
+  {% endif %}
 </div>
 {% endblock %}

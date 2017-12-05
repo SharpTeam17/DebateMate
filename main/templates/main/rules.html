@@ -1,7 +1,35 @@
-{% extends 'main/home.html' %}
+{% extends 'main/home.html' %} {% block content %}
 
-{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>DebateMate Rules
+      <h1>
+  </div>
 
-  <h2>Rules/Rubric Page</h2>
+  <div id="roles">
+    <h2>Roles</h2>
+
+    <h3>Spectator</h3>
+    <p>Spectator is the default role in a debate, upon logging in. Spectators are allowed to view all debate arguments and comments.
+      They are also allowed to report comments. Spectators are responsible for judging and voting each argument in the debate.
+      They are responsible for choosing the "winner" based on several criteria.</p>
+
+    <h3>Debater</h3>
+    <p>Users can choose to become debaters if they wish to participate in the debate: they can add new arguments and add comments.
+      They must choose a side in response to the debate topic. They are not allowed to vote.</p>
+
+    <h3>Moderator</h3>
+    <p>Moderators are responsible for removing comments/ arguments based on reports, banning users, and generally keeping the
+      debate on topic. Only certain users can be made moderator.</p>
+  </div>
+
+  <div id="codeofconduct">
+    <h2>Code of Conduct</h2>
+    <p>Please treat everyone respectfully in a debate.</p>
+    <p>Profanity is not allowed.</p>
+    <p>Do not engage in off topic conversations.</p>
+    <p>Repeated violations may result in a temporary or permanent ban.</p>
+  </div>
+</div>
 
 {% endblock %}
