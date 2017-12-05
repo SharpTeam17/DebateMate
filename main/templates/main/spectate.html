@@ -29,8 +29,8 @@
 {% block content%}
 <div class="container">
 <div class="jumbotron">
-    <h1 style="text-align:center">{{ topic }}</h1><br/>
-    <div id="piechart"></div>
+  <h3 style="text-align:center"><b>{{ topic }}</b></h3>
+  <div id="piechart"></div>
 </div>
 {% if debate_feed %}
     {% for post in debate_feed %}
@@ -72,8 +72,13 @@
               {% for key, value in comments.items %}
                   {% if key == post %}
                       {% for item in value %}
-                        <hr/>
-                          <h5>{{ item.author.username }} -> {{ item.content }}
+                      {% if item.side == 'A' %}
+                      <div class="jumbotron" style="background-color:pink">
+                      {% elif item.side == 'B' %}
+                      <div class="jumbotron" style="background-color:lightblue">
+                      {% endif %}
+                        <h5 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h3>
+                        <p>{{ item.content }}</p>
                             <span style="text-align:right; float:right">
                               {% if item.isReported == False %}
                                 <a href="/report_comment?comment_id={{ item.id }}">Report comment</a>
@@ -82,6 +87,7 @@
                               {% endif %}
                             </span>
                           </h5>
+                        </div>
                       {% endfor %}
                   {% endif %}
               {% endfor %}
