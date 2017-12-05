@@ -3,9 +3,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-5 col-md-offset-5">
-        {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
           {% if reportedComment %}
             <h2>Comment in question: </h2>
             <div class="jumbotron" style="background-color:silver">
@@ -19,8 +17,6 @@
           {% endif %}
         {% else %}
             <p style="text-align:center">You need to be logged in to report a debater.</p>
-        {% endif %}
-        </div>
-    </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -7,9 +7,9 @@
 <h1 style="text-align:center">{{ topic }}</h1><br/>
 Current scores: <br><br>
 {% if a_scores == 0 %}
-    Side A: No scoresheets have been submitted for this side. Help out by scoring an argument!
+    <h5>Side A: No scoresheets have been submitted for this side. Help out by scoring an argument!</h5>
 {% else %}
-    Side A: {{a_average}}, average of {{a_scores}} ratings.<br>
+    <h5>Side A: {{a_average}}, average of {{a_scores}} ratings.</h5><br>
     <div class="progress">
         <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
         aria-valuenow="{{a_bar}}" aria-valuemin="0" aria-valuemax="100" style="width:{{a_bar}}%">

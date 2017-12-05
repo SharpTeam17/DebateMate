@@ -21,11 +21,10 @@ class JoinForm(forms.Form):
         choices = (
             ('A', 'A'),
             ('B', 'B'),
-            ('Spectator', 'S')
         ),
         widget = forms.RadioSelect,
         label ='Select a side',
-        initial = 'S',
+        required = False,
     )
 
     helper = FormHelper()

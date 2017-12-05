@@ -359,6 +359,7 @@ def signup(request):
     return render(request, 'main/signup.html', {'form': form})
 
 def join(request):
+    current_user = request.user
     if request.method == 'POST':
         form = JoinForm(request.POST)
         if form.is_valid():
@@ -368,16 +369,22 @@ def join(request):
             # M - Moderator
             role = form.cleaned_data['role']
             side = form.cleaned_data['side']
-            current_user = request.user
             profile = UserInfo.objects.get(user = current_user)
             profile.current_role = role
-            if role == 'S' or role == 'D':
+            if role == 'D' or role == 'M':
                 profile.current_side = side
+            else:
+                profile.current_side = 'S'
             profile.save()
             return redirect('home')
     else:
         form = JoinForm()
-    return render(request, 'main/join.html', {'form': form})
+    current_debate = DailyDebate.objects.get(is_current_debate = True) #fetches debate marked current
+    context = {
+        'debate': current_debate,
+        'form' : form
+    }
+    return render(request, 'main/join.html', context)
 
 def set_debate(request):
     current_user = request.user

@@ -2,11 +2,12 @@
 {% load crispy_forms_tags %}
 
 {% block content%}
+<div class="container">
 {% if user.is_authenticated %}
 	<h3>Set today's debate topic:</h3>
 	<br>
-	{%  crispy form  %}
-	
+	{% crispy form %}
 {% endif %}
 <a href="/moderate">Return to moderator tools</a>
+</div>
 {% endblock%}
