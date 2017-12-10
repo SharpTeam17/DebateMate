@@ -435,7 +435,7 @@ def confirm_comment(request):
             temp_parent_post = Argument.objects.get(id = post_id)
             current_debate = DailyDebate.objects.filter(is_current_debate = True)[0]
 
-            new_comment = Comment(author = temp_author, side = temp_side, content = temp_content, parent_debate = current_debate, parent_post = temp_parent_post)
+            new_comment = Comment(author = temp_author, source = temp_source, side = temp_side, content = temp_content, parent_debate = current_debate, parent_post = temp_parent_post)
             new_comment.save()
             return redirect('debate')
     else:
