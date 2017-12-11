@@ -85,7 +85,7 @@
                     {% elif item.side == 'B' %}
                     <div class="jumbotron" style="background-color:lightblue">
                     {% endif %}
-                      <h4 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h4>
+                      <h4 style="text-align:center"><b>Posted by {{item.author}} on {{item.initial_post_date}}</b></h4>
                       <p>{{ item.content }}</p>
                       <p><a href="{{ item.source }}">Source</a></p>
                           <span style="text-align:right; float:right">
