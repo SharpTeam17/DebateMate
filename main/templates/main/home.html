@@ -1,7 +1,5 @@
 {% load static %}
-
 <html>
-
 <head>
   <title>DebateMate</title>
   <link rel="icon" href="{% static " images/favicon.ico " %}" type="image/x-icon" />
@@ -39,15 +37,15 @@
             <a href="/">Home</a>
           </li>
           <li>
+              <a href="/closed_debate_list">Closed Debates</a>
+            </li>
+          <li>
             <a href="/rules">Rules</a>
           </li>
-          <li>
-            <a href="/closed_debate_list">Closed Debates</a>
-          </li>
+
           <li>
             <a href="/help">Help</a>
           </li>
-
         </ul>
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
@@ -58,7 +56,7 @@
             <li>
               {% if role == 'D' %}
               <a href="#">Debater</a>
-              {% else %}
+              {% elif role == 'S' %}
               <a href="#">Spectator</a>
               {% endif %}
             <li>

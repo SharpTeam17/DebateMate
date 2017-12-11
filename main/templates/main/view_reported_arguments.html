@@ -13,7 +13,11 @@
   {% else %}
   Argument has been deactivated.
   {% endif %}
-  <div class="jumbotron" style="background-color:silver">
+  {% if post.side == 'A' %}
+  <div class="jumbotron" style="background-color:pink">
+  {% elif post.side == 'B' %}
+  <div class="jumbotron" style="background-color:lightblue">
+  {% endif %}
     <h2 style="text-align:center"><b>Side {{ post.side }}</b></h2>
     <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
     <p>{{ post.content }}</p>

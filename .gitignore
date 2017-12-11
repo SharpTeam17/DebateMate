@@ -88,3 +88,5 @@ staticfiles/
 
 .env
 db.sqlite3
+.vscode/launch.json
+.vscode/launch.json
