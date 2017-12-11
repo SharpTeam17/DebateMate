@@ -4,7 +4,6 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        
         {% if user.is_authenticated %}
           {% if selected_argument %}
             <h2>Argument in question: </h2>
@@ -14,15 +13,15 @@
             {% elif selected_argument.side == 'B' %}
             <div class="jumbotron" style="background-color:lightblue">
             {% endif %}
-                <h2 style="text-align:center"><b>Side {{ selected_argument.side }}</b></h2>
-                <h3 style="text-align:center"><b>Posted by {{ selected_argument.author }} on {{ selected_argument.initial_post_date }}</b></h3>
-                <p>{{ selected_argument.content }}</p>
+                <h2 style="text-align:center"><b>Side {{selected_argument.side}}</b></h2>
+                <h3 style="text-align:center"><b>Posted by {{selected_argument.author}} on {{selected_argument.initial_post_date}}</b></h3>
+                <p>{{selected_argument.content}}</p>
                 <p><a href="{{ selected_argument.source }}">Source</a></p>
             </div>
-
-            <h3>Please score this argument according to the following criteria: </h3>
-            <br>
-            {% crispy form %}
+            <div class="jumbotron">
+                <h3>Please score this argument according to the following criteria:</h3>
+                {% crispy form %}
+            </div>
           {% else %}
           OOPS <br> YOU ARE READING THIS BECAUSE A DEV MESSED UP
           {% endif %}

@@ -3,17 +3,17 @@
 
 {% block content %}
 <div class="container">
-    <div class="row" style="text-align: center">
-          {% if debate_list %}
-            <h3>Click on a debate to view: </h3>
-            <div>
-              {% for debate in debate_list %}
-                <p><a href="/view_closed_debate?debate_id={{debate.id}}">{{debate.topic}}</a></p>
-              {% endfor %}
-            </div>
-          {% else %}
-            <h4>The list of previous debates is empty.</h4>
-          {% endif %}
-    </div>
+  <div class="jumbotron">
+      {% if debate_list %}
+      <h3>Click on a debate to view: </h3>
+      <div>
+        {% for debate in debate_list %}
+          <h5><a href="/view_closed_debate?debate_id={{debate.id}}">{{debate.topic}}</a></h5>
+        {% endfor %}
+      </div>
+    {% else %}
+      <h4>The list of previous debates is empty.</h4>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}
