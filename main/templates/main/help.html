@@ -1,8 +1,21 @@
-{% extends 'main/home.html' %} {% block content %}
+{% extends 'main/home.html' %} {% block content %} {% load static %}
 
 <div class="container">
   <div class="page-header">
-    <h1>Help<h1>
+    <h1>Help
+      <h1>
+  </div>
+
+  <div class- "login">
+    <h2>Log in and join the debate</h2>
+    <p>Click
+      <a href="/login/">here</a> to log in.</p>
+    <p>After logging in for the first time, you will become a spectator to the debate.</p>
+    <p>If you want to join the debate as a debater, click
+      <a href="/join/">here</a> to join the debate.</p>
+    <p>You will be shown the debate topic and asked to choose your side.</p>
+    <button id="hideJoinBtn" type="button" class="btn btn-primary" style="margin-bottom:10px;">Show gif</button>
+    <img class="img-fluid" id="joinGif" src="{% static "images/gifs/joining.gif" %}" alt="Joining Gif" width="100%" height="auto"/>
   </div>
 
   <div class="createNewArgument">
@@ -12,26 +25,63 @@
     <p>You must include a source (accessible via a URL).</p>
   </div>
 
-  <div class-"login">
-    <h2>Log in and join the debate</h2>
-    <p>Click <a href="/login/">here</a> to log in.</p>
-    <p>After logging in for the first time, you will become a spectator to the debate.</p>
-    <p>If you want to join the debate as a debater, click <a href="/join/">here</a> to join the debate.</p>
-    <p>You will be shown the debate topic and asked to choose your side.</p>
-    <img src="/images/join_page.png">
-  </div>
-
   <div class="addAComment">
     <h2>Replying to arguments and adding comments</h2>
     <p>To add a comment or reply to a posted argument, simply click on the "Comment on this argument" link linked in the argument.</p>
+    <button id="hideCommentBtn" type="button" class="btn btn-primary" style="margin-bottom:10px;">Show gif</button>
+    <img class="img-fluid" id="commentGif" src="{% static "images/gifs/comment.gif" %}" alt="Commenting Gif" width="100%" height="auto"/>
   </div>
 
   <div class="reportAComment">
     <h2>Reporting arguments and comments</h2>
     <p>To report an argument, simply click on the "Report Argument" link in the argument card.</p>
     <p>To report a comment, simply click on the "Report Comment" link in the comments section.</p>
-    <p>Once reported, a moderator will look at the report and determine the best course of action, which may include removal of comment/ argument or banning of user in question.</p>
+    <p>Once reported, a moderator will look at the report and determine the best course of action, which may include removal
+      of comment/ argument or banning of user in question.</p>
+    <button id="reportCommentBtn" type="button" class="btn btn-primary" style="margin-bottom:10px;">Show gif</button>
+    <img class="img-fluid" id="reportGif" src="{% static "images/gifs/report.gif" %}" alt="Reporting Gif" width="100%" height="auto"/>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $("#joinGif").hide();
+    $("#commentGif").hide();
+    $("#reportGif").hide();
+  });
+
+  $("#hideJoinBtn").on("click", function (event) {
+    if ($(this).text() == "Hide gif") {
+      $("#joinGif").hide();
+      $(this).text("Show gif");
+    }
+    else if ($(this).text() == "Show gif") {
+      $("#joinGif").show();
+      $(this).text("Hide gif");
+    }
+  });
+
+  $("#hideCommentBtn").on("click", function (event) {
+    if ($(this).text() == "Hide gif") {
+      $("#commentGif").hide();
+      $(this).text("Show gif");
+    }
+    else if ($(this).text() == "Show gif") {
+      $("#commentGif").show();
+      $(this).text("Hide gif");
+    }
+  });
+
+  $("#reportCommentBtn").on("click", function (event) {
+    if ($(this).text() == "Hide gif") {
+      $("#reportGif").hide();
+      $(this).text("Show gif");
+    }
+    else if ($(this).text() == "Show gif") {
+      $("#reportGif").show();
+      $(this).text("Hide gif");
+    }
+  });
+</script>
 
 {% endblock %}
