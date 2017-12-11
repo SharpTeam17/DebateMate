@@ -43,9 +43,9 @@
             <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
             <h3 style="text-align:center">
                 {% if post.id in scores %}
-                    This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).
+                    <p><i>This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).</i></p>
                 {% else %}
-                    This post has not been scored yet. Click "Score Argument" to score it.
+                    <p><i>This post has not been scored yet. Click "Score Argument" to score it.</i></p>
                 {% endif %}
                 </h3>
             <br>
@@ -53,16 +53,16 @@
             <p><a href="{{ post.source }}">Source</a></p>
               <span style="text-align:left; float:left">
                 {% if post.id not in scored_arguments %}
-                   <p> <a href="/score_post?post_id={{ post.id }}">Score argument</a></p>
+                   <p><a href="/score_post?post_id={{ post.id }}">Score</a></p>
                 {% else %}
                     <p>You have scored this argument.</p>
                 {% endif %}
               </span>
               <span style="text-align:right; float:right">
                 {% if post.isReported == False %}
-                  <p><a href="/report_argument?post_id={{ post.id }}">Report argument</a></p>
+                  <p><a href="/report_argument?post_id={{ post.id }}">Report</a></p>
                 {% else %}
-                  <p>Reported.</p>
+                  <p><b>Reported</b></p>
                 {% endif %}
               </span>
             <br><br>
@@ -77,18 +77,18 @@
                       {% elif item.side == 'B' %}
                       <div class="jumbotron" style="background-color:lightblue">
                       {% endif %}
-                        <h5 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h3>
+                        <h4 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h4>
                         <p>{{ item.content }}</p>
-                            <span style="text-align:right; float:right">
-                              {% if item.isReported == False %}
-                                <a href="/report_comment?comment_id={{ item.id }}">Report comment</a>
-                              {% else %}
-                                Reported.
-                              {% endif %}
-                            </span>
-                          </h5>
-                        </div>
-                      {% endfor %}
+                        <p><a href="{{item.source}}">Source</a></p>
+                        <span style="text-align:right; float:right">
+                          {% if item.isReported == False %}
+                            <p><a href="/report_comment?comment_id={{ item.id }}">Report</a></p>
+                          {% else %}
+                            <p><b>Reported</b></p>
+                          {% endif %}
+                        </span>
+                      </div>
+                    {% endfor %}
                   {% endif %}
               {% endfor %}
             </div>

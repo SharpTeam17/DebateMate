@@ -30,7 +30,7 @@
 <div class="container">
 <div class="jumbotron">
   <h3 style="text-align:center"><b>{{ topic }}</b></h3>
-  <div id="piechart"></div>
+  <div id="piechart" style="margin:0 auto"></div>
   {% crispy post_form %}
 </div>
 {% if debate_feed %}
@@ -44,21 +44,21 @@
           <h3 style="text-align:center"><b>Posted by {{ post.author }} on {{ post.initial_post_date }}</b></h3>
           <h3 style="text-align:center">
             {% if post.id in scores %}
-                This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).
+                <p><i>This post has an average score of {{ scores|get_item:post.id }} and has been scored {{ counters|get_item:post.id }} time(s).</i></p>
             {% else %}
-                This post has not been scored yet. 
+                <p><i>This post has not been scored yet.</i></p> 
             {% endif %}
             </h3>
           <p>{{ post.content }}</p>
-          <p><a href="{{ post.source }}">Source</a>
+          <p><a href="{{ post.source }}">Source</a></p>
             <span style="text-align:right; float:right">
               {% if post.isReported == False %}
-                <a href="/report_argument?post_id={{ post.id }}">Report argument</a></p>
+                <p><a href="/report_argument?post_id={{ post.id }}">Report</a></p>
               {% else %}
-                Reported.
+                <p><b>Reported</b></p>
               {% endif %}
             </span>
-          <p><a href="/confirm_comment?post_id={{ post.id }}">Comment on this argument</a></p>
+          <p><a href="/confirm_comment?post_id={{ post.id }}">Comment</a></p>
           <!-- COMMENTS -->
           <div class="jumbotron" style="background-color:white">
             <h4><b>Comments</b></h4>
@@ -70,16 +70,16 @@
                     {% elif item.side == 'B' %}
                     <div class="jumbotron" style="background-color:lightblue">
                     {% endif %}
-                      <h5 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h3>
+                      <h4 style="text-align:center"><b>Posted by {{ item.author }} on {{ item.initial_post_date }}</b></h4>
                       <p>{{ item.content }}</p>
+                      <p><a href="{{ item.source }}">Source</a></p>
                           <span style="text-align:right; float:right">
                             {% if item.isReported == False %}
-                              <a href="/report_comment?comment_id={{ item.id }}">Report comment</a>
+                              <p><a href="/report_comment?comment_id={{ item.id }}">Report</a></p>
                             {% else %}
-                              Reported.
+                              <p><b>Reported</b></p>
                             {% endif %}
                           </span>
-                        </h5>
                       </div>
                     {% endfor %}
                 {% endif %}
