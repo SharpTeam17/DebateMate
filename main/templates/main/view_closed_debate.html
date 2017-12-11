@@ -2,12 +2,19 @@
 {% load crispy_forms_tags %}
 
 {% block header %}
+<style>
+  #piechart{
+    margin-left:auto;
+    margin-right:auto;
+    width:400px;
+  }
+</style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   // Load google charts
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart);
-
+  
   // Draw the chart and set the chart values
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
@@ -15,15 +22,23 @@
     ['A: ' + {{a_scores}} + ' Votes', {{a_average}}],
     ['B: ' + {{b_scores}} + ' Votes', {{b_average}}],
   ]);
-
+  
     // Optional; add a title and set the width and height of the chart
-    var options = {'title':'Current Score', 'width':400, 'height':300, 'backgroundColor':'transparent'};
-
+    var options = 
+      {
+        title: 'Current Score', 
+        width:400, 
+        height:300, 
+        backgroundColor:'transparent', 
+        slices:{0: {color:'#FFC0CB'}, 1:{color: '#ADD8E6'}}
+      };
+      
+  
     // Display the chart inside the <div> element with id="piechart"
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(data, options);
   }
-</script>
+</script> 
 {% endblock %}
 
 {% block content%}

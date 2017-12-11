@@ -24,7 +24,15 @@
   ]);
   
     // Optional; add a title and set the width and height of the chart
-    var options = {'title':'Current Score', 'width':400, 'height':300, 'backgroundColor':'transparent'};
+    var options = 
+      {
+        title: 'Current Score', 
+        width:400, 
+        height:300, 
+        backgroundColor:'transparent', 
+        slices:{0: {color:'#FFC0CB'}, 1:{color: '#ADD8E6'}}
+      };
+      
   
     // Display the chart inside the <div> element with id="piechart"
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -96,7 +104,6 @@
     {% endfor %}
 {% else %}
     <p style="text-align:center">No posts yet, would you like to start off the discussion?</p>
-    {% crispy post_form %}
 {% endif %}
 </div>
 {% endblock%}
