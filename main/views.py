@@ -17,10 +17,16 @@ def get_item(dictionary, key):
 #usage: {{ dicotionary_name|get_item:value }}
 
 def make_context(current_user, debate_id):
+    if current_user.is_anonymous():
+        name = 'Guest'
+        profile = None;
+        role  = None;
+    else:
+        name = current_user.username
+        profile = UserInfo.objects.get(user = current_user)
+        role = profile.current_role
     #fetches necessary items to render a debate page
-    name = current_user.username
-    profile = UserInfo.objects.get(user = current_user)
-    role = profile.current_role
+
     current_debate = DailyDebate.objects.get(id = debate_id) #fetches debate marked current
     debate_feed = Argument.objects.filter(parent_debate = current_debate)
     debate_feed = debate_feed.filter(isActive = True)
@@ -200,14 +206,8 @@ def view_reported_comments(request):
 
 def view_closed_debate(request):
     current_user = request.user
-    scored_arguments_temp = Rubric.objects.filter(grader = current_user)
-    scored_arguments = []
-    for item in scored_arguments_temp:
-        scored_arguments.append(item.post_id)
-
     debate_id = request.GET.get('debate_id')
     context = make_context(current_user, debate_id)
-    context['scored_arguments'] = scored_arguments
     return render(request, 'main/view_closed_debate.html', context)
 
 def closed_debate_list(request):
